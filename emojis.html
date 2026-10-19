@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traductor de Emojis</title>
+<link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+<div class="container">
+<div class="topbar">
+<a class="back-btn" href="index.html">← Volver al portafolio</a>
+<span>Traductor de Emojis</span>
+</div>
+<div class="card">
+<h2>😀 Traductor de Emojis</h2>
+<p style="margin-bottom:15px;">Escribe una frase y las palabras conocidas se convertirán en emojis.</p>
+<input type="text" id="frase" placeholder="Ej: estoy feliz porque el sol es beautiful...">
+<button class="btn" id="traducir">Traducir</button>
+<div class="output" id="resultado">El resultado aparecerá aquí.</div>
+</div>
+<div class="footer-note">Portafolio Emmanuel - Proyecto 4</div>
+</div>
+<script>
+var diccionario = {
+    'feliz': '😀',
+    'triste': '😢',
+    'amor': '❤️',
+    'comida': '🍕',
+    'sol': '🌞',
+    'perro': '🐶',
+    'gato': '🐱'
+};
+
+function quitarAcentos(texto) {
+    return texto.toLowerCase().replace(/á/g, 'a').replace(/é/g, 'e')
+        .replace(/í/g, 'i').replace(/ó/g, 'o').replace(/ú/g, 'u');
+}
+
+document.getElementById('traducir').onclick = function() {
+    var entrada = document.getElementById('frase');
+    var salida = document.getElementById('resultado');
+    var texto = entrada.value;
+
+    if (texto.replace(/^\s+|\s+$/g, '') === '') {
+        salida.textContent = '⚠️ Escribe una frase primero.';
+        return;
+    }
+
+    var palabras = texto.split(' ');
+    var resultado = [];
+    var cambios = 0;
+
+    for (var i = 0; i < palabras.length; i++) {
+        var original = palabras[i];
+        var limpio = quitarAcentos(original).replace(/[.,!?;:¿¡"'()]/g, '');
+        if (diccionario[limpio] !== undefined) {
+            resultado.push(diccionario[limpio]);
+            cambios++;
+        } else {
+            resultado.push(original);
+        }
+    }
+
+    if (cambios === 0) {
+        salida.textContent = 'No se encontró ninguna palabra del diccionario. Prueba con: ' +
+            'feliz, triste, amor, comida, sol, perro, gato.';
+    } else {
+        salida.textContent = resultado.join(' ');
+    }
+};
+
+document.getElementById('frase').onkeypress = function(e) {
+    if (e.keyCode === 13) {
+        document.getElementById('traducir').click();
+    }
+};
+</script>
+</body>
+</html>

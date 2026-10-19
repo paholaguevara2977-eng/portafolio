@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Especial - Quiz de Excel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            color: #aaa;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 40px;
+            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(123, 47, 247, 0.4);
+        }
+
+        .quiz-title {
+            margin: 50px 0 30px;
+            font-size: 2rem;
+            color: #1db954;
+        }
+
+        .question {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .question h3 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .option {
+            display: block;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .option:hover {
+            background: rgba(0, 210, 255, 0.1);
+            border-color: #00d2ff;
+        }
+
+        .option input {
+            margin-right: 10px;
+        }
+
+        .option.selected {
+            border-color: #00d2ff;
+            background: rgba(0, 210, 255, 0.1);
+        }
+
+        .result {
+            margin-top: 30px;
+            font-size: 1.3rem;
+            min-height: 30px;
+        }
+
+        .result.good {
+            color: #1db954;
+        }
+
+        .result.bad {
+            color: #ff6b6b;
+        }
+
+        .btn-check {
+            margin-top: 20px;
+            background: linear-gradient(90deg, #1db954, #00d2ff);
+        }
+
+        .back {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🎉</div>
+        <h1>¡Bienvenido a mi página especial!</h1>
+        <p>Este es un espacio privado y exclusivo. Aquí encontrarás contenido único e interactivo reservado solo para visitantes especiales como tú.</p>
+        <a href="index.html" class="btn">Volver al inicio</a>
+
+        <h2 class="quiz-title">Quiz de Excel Básico 📊</h2>
+
+        <div id="quiz"></div>
+
+        <button class="btn btn-check" onclick="checkAnswers()">Verificar respuestas</button>
+        <div id="result" class="result"></div>
+
+        <a href="index.html" class="btn back">Volver al inicio</a>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                type: "¿Cuál es la función para sumar un rango de celdas en Excel?",
+                options: ["SUM()", "ADD()", "TOTAL()", "CALC()"],
+                correct: 0
+            },
+            {
+                type: "¿Cuál es la extensión por defecto de un archivo de Excel?",
+                options: [".doc", ".txt", ".xlsx", ".pdf"],
+                correct: 2
+            },
+            {
+                type: "¿Qué tecla se usa para editar el contenido de una celda?",
+                options: ["Enter", "F2", "F5", "Supr"],
+                correct: 1
+            },
+            {
+                type: "¿Qué función se usa para buscar un valor en una tabla verticalmente?",
+                options: ["BUSCARV()", "BUSCARH()", "ÍNDICE()", "FIND()"],
+                correct: 0
+            },
+            {
+                type: "¿Cómo se llama la intersección entre una fila y una columna?",
+                options: ["Rango", "Hoja", "Libro", "Celda"],
+                correct: 3
+            }
+        ];
+
+        const quiz = document.getElementById('quiz');
+
+        questions.forEach((q, i) => {
+            const div = document.createElement('div');
+            div.className = 'question';
+            div.innerHTML = `<h3>${i + 1}. ${q.type}</h3>`;
+
+            q.options.forEach((opt, j) => {
+                const label = document.createElement('label');
+                label.className = 'option';
+                label.innerHTML = `<input type="radio" name="q${i}" value="${j}"> ${opt}`;
+                label.addEventListener('click', () => {
+                    const options = div.querySelectorAll('.option');
+                    options.forEach(o => o.classList.remove('selected'));
+                    label.classList.add('selected');
+                });
+                div.appendChild(label);
+            });
+
+            quiz.appendChild(div);
+        });
+
+        function checkAnswers() {
+            let score = 0;
+            let answered = 0;
+
+            questions.forEach((q, i) => {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected) {
+                    answered++;
+                    if (parseInt(selected.value) === q.correct) score++;
+                }
+            });
+
+            const result = document.getElementById('result');
+            if (answered < questions.length) {
+                result.className = 'result bad';
+                result.textContent = `Respondiste ${answered} de ${questions.length}. ¡Completa todas!`;
+            } else {
+                result.className = score >= 4 ? 'result good' : 'result bad';
+                result.textContent = `Obtuviste ${score} de ${questions.length} correctas. ${score >= 4 ? '🎉 ¡Excelente!' : '💪 ¡Sigue practicando!'}`;
+            }
+
+            result.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

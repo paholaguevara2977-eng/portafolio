@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Napoleón Bonaparte</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1c1c1c, #3b1f1f, #1c1c1c);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ffd700, #8b6914);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: Georgia, 'Times New Roman', serif;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffd700;
+            border-radius: 50px;
+            width: 45px;
+            height: 45px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(20deg);
+            border-color: #ffd700;
+        }
+
+        header {
+            text-align: center;
+            padding: 120px 20px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.1), transparent 60%);
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            font-family: Georgia, 'Times New Roman', serif;
+            background: linear-gradient(90deg, #ffd700, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header h2 {
+            font-size: 1.3rem;
+            color: #ccc;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #aaa;
+            max-width: 600px;
+            margin: 20px auto 0;
+        }
+
+        section {
+            padding: 80px 50px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+            color: #ffd700;
+            font-family: Georgia, 'Times New Roman', serif;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 35px 30px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: #ffd700;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .card p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .bio {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .bio p {
+            color: #bbb;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .timeline {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #ffd700, transparent);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 35px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 8px;
+            width: 18px;
+            height: 18px;
+            background: #ffd700;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .timeline-item h3 {
+            color: #ffd700;
+            margin-bottom: 5px;
+            font-family: Georgia, 'Times New Roman', serif;
+        }
+
+        .timeline-item p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .quote {
+            text-align: center;
+            padding: 60px 50px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quote blockquote {
+            font-size: 1.6rem;
+            font-style: italic;
+            color: #ffd700;
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.5;
+        }
+
+        .quote p {
+            margin-top: 20px;
+            color: #999;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 14px 40px;
+            background: linear-gradient(90deg, #ffd700, #8b6914);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+            header h1 {
+                font-size: 2.2rem;
+            }
+            section {
+                padding: 60px 20px;
+            }
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #fdf6f0, #f0e6d6);
+            color: #2b1b0e;
+        }
+
+        body.light nav {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        body.light .nav-links a {
+            color: #5a4a2a;
+        }
+
+        body.light .nav-links a:hover {
+            color: #8b6914;
+        }
+
+        body.light .theme-toggle {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.2);
+            color: #8b6914;
+        }
+
+        body.light .theme-toggle:hover {
+            border-color: #8b6914;
+        }
+
+        body.light header h2,
+        body.light header p {
+            color: #555;
+        }
+
+        body.light .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light .card p {
+            color: #555;
+        }
+
+        body.light .card h3 {
+            color: #8b6914;
+        }
+
+        body.light .bio p {
+            color: #444;
+        }
+
+        body.light .timeline-item p {
+            color: #555;
+        }
+
+        body.light .quote p {
+            color: #777;
+        }
+
+        body.light footer {
+            color: #888;
+            border-top-color: rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">NB</div>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#biografia">Biografía</a></li>
+            <li><a href="#batallas">Batallas</a></li>
+            <li><a href="#linea-tiempo">Línea de tiempo</a></li>
+            <li><a href="#legado">Legado</a></li>
+        </ul>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar tema claro/oscuro">🌙</button>
+    </nav>
+
+    <header id="inicio">
+        <h1>Napoleón Bonaparte</h1>
+        <h2>1769 - 1821</h2>
+        <p>Emperador de los franceses, genio militar y una de las figuras más influyentes de la historia de Europa.</p>
+        <a href="#biografia" class="btn">Conocer su historia</a>
+    </header>
+
+    <section id="biografia">
+        <h2 class="section-title">Biografía</h2>
+        <div class="bio">
+            <p>Napoleón Bonaparte nació el 15 de agosto de 1769en Ajaccio, Córcega. Fue un brillante estratega militar y estadista que llegó a convertirse en emperador de Francia. Expandió su imperio por gran parte de Europa difundiendo los ideales de la Revolución Francesa y dejando un legado legal y administrativo que perdura hasta hoy.</p>
+        </div>
+    </section>
+
+    <section id="batallas">
+        <h2 class="section-title">Batallas Famosas</h2>
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon">⚔️</div>
+                <h3>Austerlitz (1805)</h3>
+                <p>Considerada su obra maestra militar. Derrotó a las fuerzas combinadas de Rusia y Austria.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🥇</div>
+                <h3>Jena (1806)</h3>
+                <p>Victoria aplastante sobre el ejército prusiano que llevó a la caída de Prusia.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌍</div>
+                <h3>Waterloo (1815)</h3>
+                <p>Su última batalla, una derrota definitiva ante los británicos de Wellington que selló su caída.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="linea-tiempo">
+        <h2 class="section-title">Línea de Tiempo</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>1769</h3>
+                <p>Nace en Ajaccio, Córcega.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>1796</h3>
+                <p>Dirige la campaña de Italia con impresionantes victorias militares.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>1804</h3>
+                <p>Se corona Emperador de los franceses en Notre-Dame.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>1812</h3>
+                <p>La desastrosa invasión a Rusia marca el inicio de su declive.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>1815</h3>
+                <p>Derrotado en Waterloo y exiliado a la isla de Santa Elena.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>1821</h3>
+                <p>Muere en Santa Elena el 5 de mayo.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="legado">
+        <h2 class="section-title">Legado</h2>
+        <div class="quote">
+            <blockquote>"El éxito es la capacidad de ir de fracaso en fracaso sin perder el entusiasmo."</blockquote>
+            <p>— Napoleón Bonaparte</p>
+        </div>
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon">📜</div>
+                <h3>Código Civil</h3>
+                <p>Su Código Napoleónico influyó en los sistemas legales de todo el mundo.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🏛️</div>
+                <h3>Reformas</h3>
+                <p>Modernizó la educación, la administración pública y economía de Francia.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌍</div>
+                <h3>Europa</h3>
+                <p>Rediseñó el mapa de Europa y difundió los ideales de igualdad ante la ley.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Página sobre Napoleón Bonaparte - Solo con fines educativos</p>
+    </footer>
+
+    <script>
+        const themeToggle = document.querySelector('.theme-toggle');
+        const savedTheme = localStorage.getItem('theme');
+
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light');
+                themeToggle.textContent = '☀️';
+            } else {
+                document.body.classList.remove('light');
+                themeToggle.textContent = '🌙';
+            }
+        }
+
+        function toggleTheme() {
+            const isLight = document.body.classList.contains('light');
+            const newTheme = isLight ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        }
+
+        applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+    </script>
+
+</body>
+</html>

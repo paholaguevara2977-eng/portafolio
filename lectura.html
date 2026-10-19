@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lectura en Voz Alta - Portafolio Emmanuel</title>
+    <link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <a href="index.html" class="back-btn">← Volver al portafolio</a>
+            <span>Lectura en Voz Alta</span>
+        </div>
+
+        <div class="card">
+            <h2><span>📖</span> Lectura en Voz Alta</h2>
+
+            <p style="color:#aaa; margin-bottom:15px;">Escribe o pega un texto, elige una voz en español y pulsa <strong>Leer</strong>. La lectura usa el motor de voz del navegador y procesa hasta 300 caracteres por vez.</p>
+
+            <textarea id="texto" style="width:100%; height:120px; border-radius:10px; padding:12px; color:#fff; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); font-size:1rem; font-family:inherit; resize:vertical;">La lectura en voz alta es una tecnología que transforma el texto en sonido. Sirve para estudiar sin mirar la pantalla, para acceder al contenido de forma accesible y para revisar documentos mientras se pasean. En esta página puedes escribir cualquier párrafo y escucharlo con la voz española que prefieras.</textarea>
+
+            <div style="margin-top:15px;">
+                <label for="voz" style="font-size:0.9rem; color:#aaa;">Voz en español:</label>
+                <select id="voz">
+                    <option value="">Buscando voces disponibles...</option>
+                </select>
+            </div>
+
+            <div class="output" id="salida">Listo para leer. Escribe un texto y pulsa Leer.</div>
+
+            <button class="btn" onclick="leer()">🔊 Leer</button>
+            <button class="btn" onclick="detener()">⏹ Detener</button>
+        </div>
+
+        <div class="footer-note">Portafolio Emmanuel - Proyecto 5</div>
+    </div>
+
+    <script>
+        var voces = [];
+        var limite = 300;
+
+        function soporte() {
+            return ('speechSynthesis' in window) && (typeof window.SpeechSynthesisUtterance === 'function');
+        }
+
+        function cargarVoces() {
+            if (!soporte()) {
+                document.getElementById('salida').innerHTML = '⚠️ Tu navegador no soporta lectura en voz alta.';
+                return;
+            }
+
+            voces = window.speechSynthesis.getVoices() || [];
+
+            var selector = document.getElementById('voz');
+            selector.innerHTML = '';
+
+            var espanolas = [];
+            var i;
+            for (i = 0; i < voces.length; i++) {
+                if (voces[i].lang && voces[i].lang.toLowerCase().indexOf('es') === 0) {
+                    espanolas.push(i);
+                }
+            }
+
+            var lista = espanolas.length > 0 ? espanolas : null;
+
+            if (lista === null) {
+                selector.appendChild(new Option('Voz predeterminada del sistema', ''));
+                mensaje('No se detectaron voces en español; se usará la voz predeterminada.');
+            } else {
+                for (i = 0; i < lista.length; i++) {
+                    selector.appendChild(new Option(voces[lista[i]].name + ' (' + voces[lista[i]].lang + ')', lista[i]));
+                }
+                mensaje('Se detectaron ' + espanolas.length + ' voces en español. Listo para leer.');
+            }
+        }
+
+        function elegirVoz() {
+            var selector = document.getElementById('voz');
+            if (selector.value !== '' && voces[selector.value]) {
+                return voces[selector.value];
+            }
+            for (var i = 0; i < voces.length; i++) {
+                if (voces[i].lang && voces[i].lang.toLowerCase().indexOf('es') === 0) {
+                    return voces[i];
+                }
+            }
+            return null;
+        }
+
+        function leer() {
+            if (!soporte()) {
+                mensaje('⚠️ Tu navegador no soporta lectura en voz alta.');
+                return;
+            }
+
+            var contenido = document.getElementById('texto').value.replace(/^\s+|\s+$/g, '');
+            if (contenido === '') {
+                mensaje('✍️ Escribe un texto para poder leerlo.');
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+
+            var recortado = contenido.substring(0, limite);
+            var sobra = contenido.length > limite;
+            var enunciado = new SpeechSynthesisUtterance(recortado);
+            enunciado.lang = 'es-ES';
+            enunciado.rate = 0.95;
+            enunciado.pitch = 1;
+
+            var voz = elegirVoz();
+            if (voz !== null) {
+                enunciado.voice = voz;
+            }
+
+            enunciado.onend = function () {
+                mensaje('✅ Lectura terminada' + (sobra ? ' (se leyeron los primeros ' + limite + ' caracteres).' : '.'));
+            };
+            enunciado.onerror = function () {
+                mensaje('⚠️ No se pudo completar la lectura.');
+            };
+
+            window.setTimeout(function () {
+                window.speechSynthesis.speak(enunciado);
+            }, 100);
+
+            mensaje('🔊 Leyendo' + (sobra ? ' los primeros ' + limite + ' caracteres' : '') + ' con la voz: <strong>' + (voz !== null ? voz.name : 'predeterminada en español') + '</strong>');
+        }
+
+        function detener() {
+            if (!soporte()) {
+                return;
+            }
+            window.speechSynthesis.cancel();
+            mensaje('⏹ Lectura detenida.');
+        }
+
+        function mensaje(texto) {
+            document.getElementById('salida').innerHTML = texto;
+        }
+
+        if (soporte()) {
+            window.speechSynthesis.onvoiceschanged = cargarVoces;
+            cargarVoces();
+        } else {
+            document.getElementById('salida').innerHTML = '⚠️ Tu navegador no soporta lectura en voz alta.';
+        }
+    </script>
+</body>
+</html>

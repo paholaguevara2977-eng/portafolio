@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Estadísticas</title>
+<link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+<div class="container">
+<div class="topbar">
+<a class="back-btn" href="index.html">← Volver al portafolio</a>
+<span>Panel de Estadísticas</span>
+</div>
+<div class="card">
+<h2>📊 Panel de Estadísticas</h2>
+<table style="width:100%; border-collapse: collapse;">
+<thead>
+<tr>
+<th style="text-align:left; padding: 8px; border-bottom: 2px solid #ddd;">Mes</th>
+<th style="text-align:left; padding: 8px; border-bottom: 2px solid #ddd;">Ventas</th>
+</tr>
+</thead>
+<tbody id="cuerpoTabla"></tbody>
+</table>
+<div style="margin-top: 20px;">
+<div style="margin-bottom: 8px;">Enero (120)</div>
+<div style="height: 20px; width: 50%; background-color: #4a90d9; border-radius: 4px; margin-bottom: 12px;"></div>
+<div style="margin-bottom: 8px;">Febrero (200)</div>
+<div style="height: 20px; width: 83%; background-color: #4a90d9; border-radius: 4px; margin-bottom: 12px;"></div>
+<div style="margin-bottom: 8px;">Marzo (160)</div>
+<div style="height: 20px; width: 66%; background-color: #4a90d9; border-radius: 4px; margin-bottom: 12px;"></div>
+<div style="margin-bottom: 8px;">Abril (240)</div>
+<div style="height: 20px; width: 100%; background-color: #4a90d9; border-radius: 4px; margin-bottom: 12px;"></div>
+</div>
+<div style="text-align:center; margin: 15px 0;">
+<button class="btn" id="calcular">Calcular</button>
+</div>
+<div class="output" id="resultado" style="margin-top: 15px;">Pulsa Calcular para ver las estadísticas</div>
+</div>
+<div class="footer-note">Portafolio Emmanuel - Proyecto 6</div>
+</div>
+<script>
+var datos = [
+{ mes: 'Enero', ventas: 120 },
+{ mes: 'Febrero', ventas: 200 },
+{ mes: 'Marzo', ventas: 160 },
+{ mes: 'Abril', ventas: 240 }
+];
+var cuerpoTabla = document.getElementById('cuerpoTabla');
+var calcular = document.getElementById('calcular');
+var resultado = document.getElementById('resultado');
+
+function llenarTabla() {
+for (var i = 0; i < datos.length; i++) {
+var fila = document.createElement('tr');
+var celdaMes = document.createElement('td');
+var celdaVentas = document.createElement('td');
+celdaMes.style.cssText = 'padding: 8px; border-bottom: 1px solid #eee;';
+celdaVentas.style.cssText = 'padding: 8px; border-bottom: 1px solid #eee;';
+celdaMes.textContent = datos[i].mes;
+celdaVentas.textContent = datos[i].ventas;
+fila.appendChild(celdaMes);
+fila.appendChild(celdaVentas);
+cuerpoTabla.appendChild(fila);
+}
+}
+
+function calcularEstadisticas() {
+var total = 0;
+var mayor = datos[0];
+for (var i = 0; i < datos.length; i++) {
+total += datos[i].ventas;
+if (datos[i].ventas > mayor.ventas) {
+mayor = datos[i];
+}
+}
+var promedio = total / datos.length;
+resultado.textContent = 'Total: ' + total + ' | Promedio: ' + promedio + ' | Mes con mayor venta: ' + mayor.mes + ' (' + mayor.ventas + ')';
+}
+
+llenarTabla();
+calcular.onclick = calcularEstadisticas;
+</script>
+</body>
+</html>

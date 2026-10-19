@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversor de Unidades</title>
+<link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+<div class="container">
+<div class="topbar">
+<a class="back-btn" href="index.html">← Volver al portafolio</a>
+<span>Conversor de Unidades</span>
+</div>
+<div class="card">
+<h2>📏 Conversor de Unidades</h2>
+
+<select id="categoria">
+<option value="longitud">Longitud</option>
+<option value="peso">Peso</option>
+<option value="temperatura">Temperatura</option>
+</select>
+
+<select id="origen"></select>
+<select id="destino"></select>
+
+<input type="number" id="valor" value="5" placeholder="Valor a convertir" step="any">
+
+<button class="btn" id="convertir">Convertir</button>
+
+<div class="output" id="resultado">5 km = 5000 m</div>
+</div>
+<div class="footer-note">Portafolio Emmanuel - Proyecto 5</div>
+</div>
+<script>
+var categorias = {
+    'longitud': {
+        etiqueta: 'Longitud',
+        unidades: [
+            { valor: 'm', nombre: 'metros (m)' },
+            { valor: 'km', nombre: 'kilómetros (km)' }
+        ],
+        aBase: function (c) { return c / 1000; },
+        deBase: function (c) { return c * 1000; },
+        simbolo: 'm'
+    },
+    'peso': {
+        etiqueta: 'Peso',
+        unidades: [
+            { valor: 'kg', nombre: 'kilogramos (kg)' },
+            { valor: 'lb', nombre: 'libras (lb)' }
+        ],
+        aBase: function (c) { return c / 2.20462; },
+        deBase: function (c) { return c * 2.20462; },
+        simbolo: 'kg'
+    },
+    'temperatura': {
+        etiqueta: 'Temperatura',
+        unidades: [
+            { valor: 'c', nombre: 'grados Celsius (°C)' },
+            { valor: 'f', nombre: 'grados Fahrenheit (°F)' }
+        ],
+        aBase: function (c) { return c; },
+        deBase: function (c) { return c; },
+        simbolo: '°C'
+    }
+};
+
+var selCategoria = document.getElementById('categoria');
+var selOrigen = document.getElementById('origen');
+var selDestino = document.getElementById('destino');
+var campoValor = document.getElementById('valor');
+var salida = document.getElementById('resultado');
+
+function redondear(n) {
+    return Math.round(n * 10000) / 10000;
+}
+
+function simboloDe(unidad, categoria) {
+    if (categoria === 'temperatura') {
+        return unidad === 'c' ? '°C' : '°F';
+    }
+    return unidad;
+}
+
+function llenarSelects() {
+    var datos = categorias[selCategoria.value];
+    var opcionesOrigen = '';
+    var opcionesDestino = '';
+
+    for (var i = 0; i < datos.unidades.length; i++) {
+        var u = datos.unidades[i];
+        opcionesOrigen += '<option value="' + u.valor + '">' + u.nombre + '</option>';
+        opcionesDestino += '<option value="' + u.valor + '">' + u.nombre + '</option>';
+    }
+
+    selOrigen.innerHTML = opcionesOrigen;
+    selDestino.innerHTML = opcionesDestino;
+    selOrigen.selectedIndex = datos.unidades.length - 1;
+    selDestino.selectedIndex = 0;
+}
+
+function convertir() {
+    var datos = categorias[selCategoria.value];
+    var de = selOrigen.value;
+    var a = selDestino.value;
+    var cantidad = parseFloat(campoValor.value);
+
+    if (isNaN(cantidad)) {
+        salida.textContent = '⚠️ Ingresa un número válido.';
+        return;
+    }
+
+    var resultado;
+
+    if (datos.etiqueta === 'Temperatura') {
+        if (de === 'c' && a === 'f') {
+            resultado = (cantidad * 9 / 5) + 32;
+        } else if (de === 'f' && a === 'c') {
+            resultado = (cantidad - 32) * 5 / 9;
+        } else {
+            resultado = cantidad;
+        }
+    } else {
+        resultado = datos.deBase(datos.aBase(cantidad));
+    }
+
+    salida.textContent = cantidad + ' ' + simboloDe(de, selCategoria.value) +
+        ' = ' + redondear(resultado) + ' ' + simboloDe(a, selCategoria.value);
+}
+
+selCategoria.onchange = function() {
+    llenarSelects();
+    convertir();
+};
+
+selOrigen.onchange = convertir;
+selDestino.onchange = convertir;
+
+document.getElementById('convertir').onclick = convertir;
+
+campoValor.onkeypress = function (e) {
+    if (e.keyCode === 13) {
+        convertir();
+    }
+};
+
+llenarSelects();
+convertir();
+</script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reproductor de Música - Portafolio Emmanuel</title>
+    <link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <a href="index.html" class="back-btn">← Volver al portafolio</a>
+            <span>Reproductor de Música</span>
+        </div>
+
+        <div class="card">
+            <h2><span>🎵</span> Reproductor de Música</h2>
+
+            <p style="color:#aaa; margin-bottom:5px;">Lista de canciones ficticias. Pulsa <strong>Reproducir</strong> en la que quieras y la barra de progreso irá avanzando segundo a segundo.</p>
+
+            <div id="lista" style="margin-top:20px;"></div>
+
+            <div class="output" id="salida">Ninguna canción en reproducción.</div>
+
+            <div style="margin-top:20px;">
+                <div style="height:14px; background:rgba(255,255,255,0.12); border-radius:10px; overflow:hidden;">
+                    <div id="barra" style="width:0%; height:100%; background:linear-gradient(90deg, #00d2ff, #7b2ff7); border-radius:10px; transition:width 1s linear;"></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:0.85rem; color:#aaa;">
+                    <span id="transcurrido">0:00</span>
+                    <span id="total">0:00</span>
+                </div>
+            </div>
+
+            <button class="btn" onclick="pausar()">⏸ Pausa</button>
+            <button class="btn" onclick="detener()">⏹ Detener</button>
+        </div>
+
+        <div class="footer-note">Portafolio Emmanuel - Proyecto 2</div>
+    </div>
+
+    <script>
+        var canciones = [
+            { artista: 'Los Neón', cancion: 'Luces de la Ciudad', duracion: 214 },
+            { artista: 'María Sol', cancion: 'Rayo de Verano', duracion: 187 },
+            { artista: 'DJ Pixel', cancion: 'Código Binario', duracion: 243 },
+            { artista: 'Las Brisas', cancion: 'Camino Real', duracion: 168 },
+            { artista: 'Eco del Sur', cancion: 'Montaña Dorada', duracion: 226 },
+            { artista: 'Turbo Pixel', cancion: 'A Toda Máquina', duracion: 195 }
+        ];
+
+        var actual = null;
+        var intervalo = null;
+        var reproduciendo = false;
+
+        function construirLista() {
+            var lista = document.getElementById('lista');
+            lista.innerHTML = '';
+            for (var i = 0; i < canciones.length; i++) {
+                (function (indice) {
+                    var fila = document.createElement('div');
+                    fila.style.display = 'flex';
+                    fila.style.justifyContent = 'space-between';
+                    fila.style.alignItems = 'center';
+                    fila.style.gap = '10px';
+                    fila.style.padding = '12px 15px';
+                    fila.style.marginBottom = '8px';
+                    fila.style.background = 'rgba(255,255,255,0.05)';
+                    fila.style.border = '1px solid rgba(255,255,255,0.1)';
+                    fila.style.borderRadius = '10px';
+
+                    var dato = document.createElement('div');
+                    dato.innerHTML = '<strong>' + canciones[indice].cancion + '</strong><br><span style="font-size:0.85rem; color:#aaa;">' + canciones[indice].artista + ' · ' + formatear(canciones[indice].duracion) + '</span>';
+
+                    var boton = document.createElement('button');
+                    boton.className = 'btn';
+                    boton.style.marginTop = '0';
+                    boton.style.padding = '8px 18px';
+                    boton.innerHTML = 'Reproducir';
+                    boton.onclick = function () {
+                        reproducir(indice);
+                    };
+
+                    fila.appendChild(dato);
+                    fila.appendChild(boton);
+                    lista.appendChild(fila);
+                })(i);
+            }
+        }
+
+        function reproducir(indice) {
+            limpiarIntervalo();
+            var cancion = canciones[indice];
+            actual = {
+                nombre: cancion.artista + ' - ' + cancion.cancion,
+                total: cancion.duracion,
+                t: 0
+            };
+            reproduciendo = true;
+            document.getElementById('salida').innerHTML = '▶ Reproduciendo: <strong>' + actual.nombre + '</strong>';
+            actualizarBarra();
+            intervalo = window.setInterval(tick, 1000);
+        }
+
+        function tick() {
+            if (!actual) {
+                return;
+            }
+            actual.t = actual.t + 1;
+            if (actual.t >= actual.total) {
+                finalizar();
+                return;
+            }
+            actualizarBarra();
+        }
+
+        function actualizarBarra() {
+            if (!actual) {
+                return;
+            }
+            var porcentaje = Math.round((actual.t / actual.total) * 100);
+            document.getElementById('barra').style.width = porcentaje + '%';
+            document.getElementById('transcurrido').innerHTML = formatear(actual.t);
+            document.getElementById('total').innerHTML = formatear(actual.total);
+        }
+
+        function pausar() {
+            if (!actual) {
+                mensaje('No hay ninguna canción en reproducción.');
+                return;
+            }
+            if (reproduciendo) {
+                limpiarIntervalo();
+                reproduciendo = false;
+                mensaje('⏸ En pausa: <strong>' + actual.nombre + '</strong>');
+            } else {
+                reproduciendo = true;
+                mensaje('▶ Reproduciendo: <strong>' + actual.nombre + '</strong>');
+                intervalo = window.setInterval(tick, 1000);
+            }
+        }
+
+        function detener() {
+            limpiarIntervalo();
+            reproduciendo = false;
+            actual = null;
+            document.getElementById('barra').style.width = '0%';
+            document.getElementById('transcurrido').innerHTML = '0:00';
+            document.getElementById('total').innerHTML = '0:00';
+            mensaje('⏹ Reproducción detenida y barra reiniciada.');
+        }
+
+        function finalizar() {
+            var nombre = actual.nombre;
+            limpiarIntervalo();
+            reproduciendo = false;
+            actual = null;
+            document.getElementById('barra').style.width = '100%';
+            document.getElementById('transcurrido').innerHTML = '0:00';
+            document.getElementById('total').innerHTML = '0:00';
+            mensaje('✅ Terminó: <strong>' + nombre + '</strong>');
+            window.setTimeout(function () {
+                document.getElementById('barra').style.width = '0%';
+            }, 1200);
+        }
+
+        function limpiarIntervalo() {
+            if (intervalo !== null) {
+                window.clearInterval(intervalo);
+                intervalo = null;
+            }
+        }
+
+        function formatear(segundos) {
+            var minutos = Math.floor(segundos / 60);
+            var resto = segundos % 60;
+            var texto = resto < 10 ? '0' + resto : '' + resto;
+            return minutos + ':' + texto;
+        }
+
+        function mensaje(texto) {
+            document.getElementById('salida').innerHTML = texto;
+        }
+
+        construirLista();
+    </script>
+</body>
+</html>

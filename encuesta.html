@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encuesta Interactiva</title>
+<link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+<div class="container">
+<div class="topbar">
+<a class="back-btn" href="index.html">← Volver al portafolio</a>
+<span>Encuesta Interactiva</span>
+</div>
+<div class="card">
+<h2>🎯 Encuesta Interactiva</h2>
+
+<p style="margin-bottom:15px;">¿Cuál es el mejor lenguaje de programación?</p>
+
+<label style="display:block; margin-bottom:10px; cursor:pointer;">
+    <input type="radio" name="lenguaje" value="JavaScript" checked style="width:auto; margin-right:10px;"> JavaScript
+</label>
+<label style="display:block; margin-bottom:10px; cursor:pointer;">
+    <input type="radio" name="lenguaje" value="Python" style="width:auto; margin-right:10px;"> Python
+</label>
+<label style="display:block; margin-bottom:10px; cursor:pointer;">
+    <input type="radio" name="lenguaje" value="C++" style="width:auto; margin-right:10px;"> C++
+</label>
+
+<button class="btn" id="votar">Votar</button>
+<button class="btn" id="reiniciar">Reiniciar</button>
+
+<div class="output" id="resultado">JavaScript: 0 | Python: 0 | C++: 0</div>
+</div>
+<div class="footer-note">Portafolio Emmanuel - Proyecto 3</div>
+</div>
+<script>
+var conteo = { 'JavaScript': 0, 'Python': 0, 'C++': 0 };
+var salida = document.getElementById('resultado');
+
+function mostrar() {
+    salida.textContent = 'JavaScript: ' + conteo['JavaScript'] +
+        ' | Python: ' + conteo['Python'] +
+        ' | C++: ' + conteo['C++'];
+}
+
+function opcionElegida() {
+    var radios = document.getElementsByName('lenguaje');
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            return radios[i].value;
+        }
+    }
+    return '';
+}
+
+document.getElementById('votar').onclick = function() {
+    var elegida = opcionElegida();
+    if (elegida === '') {
+        salida.textContent = '⚠️ Selecciona una opción para votar.';
+        return;
+    }
+    conteo[elegida] = conteo[elegida] + 1;
+    mostrar();
+};
+
+document.getElementById('reiniciar').onclick = function() {
+    conteo['JavaScript'] = 0;
+    conteo['Python'] = 0;
+    conteo['C++'] = 0;
+    mostrar();
+};
+
+mostrar();
+</script>
+</body>
+</html>

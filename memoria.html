@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juego de Memoria</title>
+<link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+<div class="container">
+<div class="topbar">
+<a class="back-btn" href="index.html">← Volver al portafolio</a>
+<span>Juego de Memoria</span>
+</div>
+<div class="card">
+<h2>🧠 Juego de Memoria</h2>
+<div class="output" id="marcador">Movimientos: 0 | Parejas encontradas: 0 / 6</div>
+<div id="grid" style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px;"></div>
+<div style="text-align:center; margin-top:15px;">
+<button class="btn" id="btnReiniciar">Reiniciar</button>
+</div>
+</div>
+<div class="footer-note">Portafolio Emmanuel - Proyecto 3</div>
+</div>
+<script>
+var emojis = ['🍎','🍌','🍇','🍓','🥝','🍍'];
+var grid = document.getElementById('grid');
+var marcador = document.getElementById('marcador');
+var btnReiniciar = document.getElementById('btnReiniciar');
+var cartas = [];
+var primera = null;
+var segunda = null;
+var bloqueado = false;
+var movimientos = 0;
+var encontradas = 0;
+
+function barajar(arr) {
+for (var i = arr.length - 1; i > 0; i--) {
+var j = Math.floor(Math.random() * (i + 1));
+var t = arr[i];
+arr[i] = arr[j];
+arr[j] = t;
+}
+}
+
+function actualizarMarcador() {
+marcador.textContent = 'Movimientos: ' + movimientos + ' | Parejas encontradas: ' + encontradas + ' / 6';
+}
+
+function crearCarta(valor, id) {
+var div = document.createElement('div');
+div.className = 'card-tarjeta';
+div.setAttribute('data-valor', valor);
+div.setAttribute('data-id', id);
+div.style.cssText = 'height:70px; display:flex; align-items:center; justify-content:center; font-size:30px; cursor:pointer; border-radius:10px; border:2px solid #ccc; background-color:#f0f0f0; transition: background-color 0.2s;';
+div.textContent = '?';
+div.onclick = voltear;
+return div;
+}
+
+function crearTablero() {
+grid.innerHTML = '';
+var lista = emojis.concat(emojis);
+barajar(lista);
+for (var i = 0; i < lista.length; i++) {
+cartas.push(crearCarta(lista[i], i));
+grid.appendChild(cartas[i]);
+}
+}
+
+function voltear() {
+if (bloqueado) return;
+if (this.getAttribute('data-revelada') === 'true') return;
+if (primera === this) return;
+this.textContent = this.getAttribute('data-valor');
+this.setAttribute('data-revelada', 'true');
+this.style.backgroundColor = '#d4edda';
+
+if (primera === null) {
+primera = this;
+} else {
+segunda = this;
+movimientos++;
+if (primera.getAttribute('data-valor') === segunda.getAttribute('data-valor')) {
+primera = null;
+segunda = null;
+encontradas++;
+actualizarMarcador();
+} else {
+bloqueado = true;
+actualizarMarcador();
+setTimeout(function() {
+primera.textContent = '?';
+segunda.textContent = '?';
+primera.removeAttribute('data-revelada');
+segunda.removeAttribute('data-revelada');
+primera.style.backgroundColor = '#f0f0f0';
+segunda.style.backgroundColor = '#f0f0f0';
+primera = null;
+segunda = null;
+bloqueado = false;
+}, 1000);
+}
+actualizarMarcador();
+}
+}
+
+function reiniciar() {
+cartas = [];
+primera = null;
+segunda = null;
+bloqueado = false;
+movimientos = 0;
+encontradas = 0;
+crearTablero();
+actualizarMarcador();
+}
+
+btnReiniciar.onclick = reiniciar;
+crearTablero();
+actualizarMarcador();
+</script>
+</body>
+</html>

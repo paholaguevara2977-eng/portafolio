@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galería de Imágenes</title>
+<link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+<div class="container">
+<div class="topbar">
+<a class="back-btn" href="index.html">← Volver al portafolio</a>
+<span>Galería de Imágenes</span>
+</div>
+<div class="card">
+<h2>🖼️ Galería de Imágenes</h2>
+<div id="grid" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 15px;"></div>
+<button class="btn" id="close">Cerrar</button>
+<div class="output" id="viewer">Haz clic en una imagen para verla ampliada.</div>
+</div>
+<div class="footer-note">Portafolio Emmanuel - Proyecto 1</div>
+</div>
+<script>
+var photos = [
+    { emoji: '🌄', title: 'Paisaje' },
+    { emoji: '🌊', title: 'Océano' },
+    { emoji: '🏞️', title: 'Montañas' },
+    { emoji: '🎨', title: 'Arte' },
+    { emoji: '🚀', title: 'Espacio' },
+    { emoji: '🌹', title: 'Flor' }
+];
+
+var grid = document.getElementById('grid');
+var viewer = document.getElementById('viewer');
+
+for (var i = 0; i < photos.length; i++) {
+    (function(item) {
+        var cell = document.createElement('div');
+        cell.textContent = item.emoji;
+        cell.setAttribute('style', 'font-size:70px; text-align:center; cursor:pointer; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:15px;');
+        cell.onclick = function() {
+            viewer.innerHTML = '';
+            var big = document.createElement('div');
+            big.textContent = item.emoji;
+            big.setAttribute('style', 'font-size:120px; text-align:center;');
+            var cap = document.createElement('p');
+            cap.textContent = item.title;
+            cap.setAttribute('style', 'text-align:center; font-size:1.2rem; margin-top:10px;');
+            viewer.appendChild(big);
+            viewer.appendChild(cap);
+        };
+        grid.appendChild(cell);
+    })(photos[i]);
+}
+
+document.getElementById('close').onclick = function() {
+    viewer.textContent = 'Galería cerrada.';
+};
+</script>
+</body>
+</html>

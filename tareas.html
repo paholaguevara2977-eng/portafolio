@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lista de Tareas</title>
+<link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+<div class="container">
+<div class="topbar">
+<a class="back-btn" href="index.html">← Volver al portafolio</a>
+<span>Lista de Tareas</span>
+</div>
+<div class="card">
+<h2>📝 Lista de Tareas</h2>
+<div>
+<input type="text" id="entrada" placeholder="Escribe una nueva tarea...">
+<button class="btn" id="agregar">Agregar</button>
+</div>
+<div class="output" id="contador" style="margin-top: 15px;">Pendientes: 0 | Completadas: 0</div>
+<ul id="lista" style="list-style: none; padding: 0; margin-top: 15px;"></ul>
+</div>
+<div class="footer-note">Portafolio Emmanuel - Proyecto 4</div>
+</div>
+<script>
+var entrada = document.getElementById('entrada');
+var botonAgregar = document.getElementById('agregar');
+var lista = document.getElementById('lista');
+var contador = document.getElementById('contador');
+var pendientes = 0;
+var completadas = 0;
+
+function actualizarContador() {
+contador.textContent = 'Pendientes: ' + pendientes + ' | Completadas: ' + completadas;
+}
+
+function agregarTarea() {
+var texto = entrada.value;
+if (texto === '') {
+return;
+}
+pendientes++;
+crearElemento(texto, false);
+entrada.value = '';
+actualizarContador();
+}
+
+function crearElemento(texto, completada) {
+var li = document.createElement('li');
+li.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding: 10px; margin-bottom: 6px; border: 1px solid #ddd; border-radius: 6px; background-color: #fafafa;';
+
+var span = document.createElement('span');
+span.style.cursor = 'pointer';
+span.textContent = texto;
+if (completada) {
+span.style.textDecoration = 'line-through';
+span.style.color = '#888';
+}
+span.onclick = function() {
+if (span.getAttribute('data-completada') === 'true') {
+span.removeAttribute('data-completada');
+span.style.textDecoration = 'none';
+span.style.color = '';
+completadas--;
+pendientes++;
+} else {
+span.setAttribute('data-completada', 'true');
+span.style.textDecoration = 'line-through';
+span.style.color = '#888';
+completadas++;
+pendientes--;
+}
+actualizarContador();
+};
+
+var btn = document.createElement('button');
+btn.className = 'btn';
+btn.textContent = 'Eliminar';
+btn.onclick = function() {
+if (span.getAttribute('data-completada') === 'true') {
+completadas--;
+} else {
+pendientes--;
+}
+lista.removeChild(li);
+actualizarContador();
+};
+
+li.appendChild(span);
+li.appendChild(btn);
+lista.appendChild(li);
+}
+
+botonAgregar.onclick = agregarTarea;
+entrada.onkeypress = function(ev) {
+if (ev.keyCode === 13) {
+agregarTarea();
+}
+};
+actualizarContador();
+</script>
+</body>
+</html>

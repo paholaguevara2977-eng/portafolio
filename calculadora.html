@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora Web</title>
+<link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+<div class="container">
+<div class="topbar">
+<a class="back-btn" href="index.html">← Volver al portafolio</a>
+<span>Calculadora Web</span>
+</div>
+<div class="card">
+<h2>🔢 Calculadora Web</h2>
+<div class="output" id="display">0</div>
+<div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px;">
+<button class="btn num">7</button>
+<button class="btn num">8</button>
+<button class="btn num">9</button>
+<button class="btn op">/</button>
+<button class="btn num">4</button>
+<button class="btn num">5</button>
+<button class="btn num">6</button>
+<button class="btn op">*</button>
+<button class="btn num">1</button>
+<button class="btn num">2</button>
+<button class="btn num">3</button>
+<button class="btn op">-</button>
+<button class="btn num">0</button>
+<button class="btn" id="clear">C</button>
+<button class="btn" id="equal">=</button>
+<button class="btn op">+</button>
+</div>
+</div>
+<div class="footer-note">Portafolio Emmanuel - Proyecto 1</div>
+</div>
+<script>
+var display = document.getElementById('display');
+var nums = document.getElementsByClassName('num');
+var ops = document.getElementsByClassName('op');
+var clearBtn = document.getElementById('clear');
+var equalBtn = document.getElementById('equal');
+var current = '0';
+var prev = null;
+var op = null;
+var shouldReset = false;
+
+function updateDisplay() {
+display.textContent = current;
+}
+
+function inputNum(val) {
+if (shouldReset) {
+current = val;
+shouldReset = false;
+} else {
+if (current === '0') {
+current = val;
+} else {
+current = current + val;
+}
+}
+updateDisplay();
+}
+
+function inputOp(o) {
+if (prev !== null && op !== null && !shouldReset) {
+compute();
+}
+prev = current;
+op = o;
+shouldReset = true;
+}
+
+function compute() {
+var a = parseFloat(prev);
+var b = parseFloat(current);
+var res = 0;
+if (op === '+') res = a + b;
+if (op === '-') res = a - b;
+if (op === '*') res = a * b;
+if (op === '/') {
+if (b === 0) res = 0;
+else res = a / b;
+}
+current = String(res);
+prev = null;
+op = null;
+shouldReset = true;
+updateDisplay();
+}
+
+for (var i = 0; i < nums.length; i++) {
+nums[i].onclick = function() {
+inputNum(this.textContent);
+};
+}
+for (var j = 0; j < ops.length; j++) {
+ops[j].onclick = function() {
+inputOp(this.textContent);
+};
+}
+clearBtn.onclick = function() {
+current = '0';
+prev = null;
+op = null;
+shouldReset = false;
+updateDisplay();
+};
+equalBtn.onclick = function() {
+if (op !== null && prev !== null) {
+compute();
+}
+};
+updateDisplay();
+</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego del Gato (Tres en Raya) - Portafolio Emmanuel</title>
+    <link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <a href="index.html" class="back-btn">← Volver al portafolio</a>
+            <span>Juego del Gato</span>
+        </div>
+
+        <div class="card">
+            <h2><span>🎮</span> Juego del Gato (Tres en Raya)</h2>
+
+            <p style="color:#aaa; margin-bottom:5px;">Tú juegas con <strong style="color:#00d2ff;">X</strong> y la máquina juega con <strong style="color:#ffd700;">O</strong>. Gana quien forme una línea de 3 casillas: horizontal, vertical o diagonal.</p>
+
+            <div id="tablero" style="display:grid; grid-template-columns:repeat(3, 80px); gap:10px; justify-content:center; margin:25px 0;">
+                <button class="celda" onclick="jugar(0)" style="width:80px; height:80px; font-size:2rem; display:grid; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:12px; color:#fff; font-family:inherit; cursor:pointer;""></button>
+                <button class="celda" onclick="jugar(1)" style="width:80px; height:80px; font-size:2rem; display:grid; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:12px; color:#fff; font-family:inherit; cursor:pointer;""></button>
+                <button class="celda" onclick="jugar(2)" style="width:80px; height:80px; font-size:2rem; display:grid; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:12px; color:#fff; font-family:inherit; cursor:pointer;""></button>
+                <button class="celda" onclick="jugar(3)" style="width:80px; height:80px; font-size:2rem; display:grid; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:12px; color:#fff; font-family:inherit; cursor:pointer;""></button>
+                <button class="celda" onclick="jugar(4)" style="width:80px; height:80px; font-size:2rem; display:grid; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:12px; color:#fff; font-family:inherit; cursor:pointer;""></button>
+                <button class="celda" onclick="jugar(5)" style="width:80px; height:80px; font-size:2rem; display:grid; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:12px; color:#fff; font-family:inherit; cursor:pointer;""></button>
+                <button class="celda" onclick="jugar(6)" style="width:80px; height:80px; font-size:2rem; display:grid; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:12px; color:#fff; font-family:inherit; cursor:pointer;""></button>
+                <button class="celda" onclick="jugar(7)" style="width:80px; height:80px; font-size:2rem; display:grid; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:12px; color:#fff; font-family:inherit; cursor:pointer;""></button>
+                <button class="celda" onclick="jugar(8)" style="width:80px; height:80px; font-size:2rem; display:grid; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:12px; color:#fff; font-family:inherit; cursor:pointer;""></button>
+            </div>
+
+            <div class="output" id="salida">Tu turno: eres <strong>X</strong> y la máquina juega <strong>O</strong>. Elige una casilla.</div>
+
+            <button class="btn" onclick="reiniciar()">Reiniciar</button>
+        </div>
+
+        <div class="footer-note">Portafolio Emmanuel - Proyecto 1</div>
+    </div>
+
+    <script>
+        var LINEAS = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ];
+
+        var casillas = [];
+        var terminado = false;
+
+        function cargarTablero() {
+            var tablero = document.getElementById('tablero');
+            var botones = tablero.getElementsByTagName('button');
+            casillas = [];
+            for (var i = 0; i < botones.length; i++) {
+                casillas.push(botones[i]);
+            }
+            reiniciar();
+        }
+
+        function reiniciar() {
+            for (var i = 0; i < casillas.length; i++) {
+                casillas[i].innerHTML = '';
+                casillas[i].disabled = false;
+                casillas[i].style.background = 'rgba(255,255,255,0.08)';
+                casillas[i].style.borderColor = 'rgba(255,255,255,0.2)';
+            }
+            terminado = false;
+            mensaje('Tablero limpio. Tu turno: eres <strong style="color:#00d2ff;">X</strong>.');
+        }
+
+        function jugar(posicion) {
+            if (terminado) {
+                return;
+            }
+            if (casillas[posicion].innerHTML !== '') {
+                mensaje('Esa casilla ya está ocupada. Elige otra.');
+                return;
+            }
+            marcar(posicion, 'X', 'rgba(0,210,255,0.20)', '#00d2ff');
+
+            if (revisarGanador('X')) {
+                terminar('🏆 ¡Ganaste! Formaste una línea con tus X.');
+                return;
+            }
+            if (tableroLleno()) {
+                terminar('🤝 ¡Empate! El tablero se llenó sin ganador.');
+                return;
+            }
+            mensaje('Turno de la máquina (O)...');
+            window.setTimeout(jugadaMaquina, 450);
+        }
+
+        function jugadaMaquina() {
+            if (terminado) {
+                return;
+            }
+            var libres = [];
+            var i;
+            for (i = 0; i < casillas.length; i++) {
+                if (casillas[i].innerHTML === '') {
+                    libres.push(i);
+                }
+            }
+            if (libres.length === 0) {
+                terminar('🤝 ¡Empate! El tablero se llenó sin ganador.');
+                return;
+            }
+
+            var elegida = libres[Math.floor(Math.random() * libres.length)];
+            marcar(elegida, 'O', 'rgba(255,215,0,0.20)', '#ffd700');
+
+            if (revisarGanador('O')) {
+                terminar('🤖 ¡La máquina ganó! Esta vez ganó O.');
+                return;
+            }
+            if (tableroLleno()) {
+                terminar('🤝 ¡Empate! El tablero se llenó sin ganador.');
+                return;
+            }
+            mensaje('Tu turno: eres <strong style="color:#00d2ff;">X</strong>.');
+        }
+
+        function marcar(posicion, simbolo, fondo, borde) {
+            casillas[posicion].innerHTML = simbolo;
+            casillas[posicion].style.background = fondo;
+            casillas[posicion].style.borderColor = borde;
+        }
+
+        function revisarGanador(simbolo) {
+            for (var i = 0; i < LINEAS.length; i++) {
+                var linea = LINEAS[i];
+                if (casillas[linea[0]].innerHTML === simbolo &&
+                    casillas[linea[1]].innerHTML === simbolo &&
+                    casillas[linea[2]].innerHTML === simbolo) {
+                    for (var j = 0; j < linea.length; j++) {
+                        casillas[linea[j]].style.borderColor = '#1db954';
+                        casillas[linea[j]].style.background = 'rgba(29,185,84,0.25)';
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function tableroLleno() {
+            for (var i = 0; i < casillas.length; i++) {
+                if (casillas[i].innerHTML === '') {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function terminar(texto) {
+            terminado = true;
+            for (var i = 0; i < casillas.length; i++) {
+                casillas[i].disabled = true;
+            }
+            mensaje(texto + ' Pulsa <strong>Reiniciar</strong> para volver a jugar.');
+        }
+
+        function mensaje(texto) {
+            document.getElementById('salida').innerHTML = texto;
+        }
+
+        cargarTablero();
+    </script>
+</body>
+</html>

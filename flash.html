@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjetas Flash | Portafolio Emmanuel</title>
+    <link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <a class="back-btn" href="index.html">&larr; Volver al portafolio</a>
+            <span>Tarjetas Flash</span>
+        </div>
+
+        <div class="card">
+            <h2><span>&#128179;</span>Tarjetas Flash</h2>
+
+            <p id="contador">Tarjeta 1 de 5</p>
+
+            <div class="output" id="tarjeta" style="cursor:pointer;font-size:1.4rem;min-height:90px;">
+                <span id="pregunta"></span>
+                <span id="respuesta" style="display:none;color:#00d2ff;font-size:2.2rem;">&nbsp;</span>
+            </div>
+
+            <button class="btn" id="btnRespuesta">Mostrar respuesta</button>
+            <button class="btn" id="btnAnterior">Anterior</button>
+            <button class="btn" id="btnSiguiente">Siguiente</button>
+        </div>
+
+        <div class="footer-note">Portafolio Emmanuel - Tarjetas Flash</div>
+    </div>
+
+    <script>
+        (function () {
+            var tarjetas = [
+                { pregunta: '¿2+2?', respuesta: '4' },
+                { pregunta: 'Capital de Francia', respuesta: 'Par&iacute;s' },
+                { pregunta: '&iquest;Cu&aacute;nto es 7 x 8?', respuesta: '56' },
+                { pregunta: 'Quimica: s&iacute;mbolo del oro', respuesta: 'Au' },
+                { pregunta: '&iquest;Qui&eacute;n escribi&oacute; Don Quijote?', respuesta: 'Miguel de Cervantes' }
+            ];
+
+            var indice = 0;
+            var visible = false;
+
+            var contador = document.getElementById('contador');
+            var tarjeta = document.getElementById('tarjeta');
+            var textoPregunta = document.getElementById('pregunta');
+            var textoRespuesta = document.getElementById('respuesta');
+            var btnRespuesta = document.getElementById('btnRespuesta');
+            var btnAnterior = document.getElementById('btnAnterior');
+            var btnSiguiente = document.getElementById('btnSiguiente');
+
+            function pintar() {
+                contador.innerHTML = 'Tarjeta ' + (indice + 1) + ' de ' + tarjetas.length;
+                textoPregunta.innerHTML = '<strong>' + tarjetas[indice].pregunta + '</strong>';
+                textoRespuesta.innerHTML = '&nbsp;';
+                textoRespuesta.style.display = 'none';
+                btnRespuesta.innerHTML = 'Mostrar respuesta';
+                visible = false;
+            }
+
+            function mostrarRespuesta() {
+                if (visible) {
+                    textoRespuesta.style.display = 'none';
+                    textoRespuesta.innerHTML = '&nbsp;';
+                    btnRespuesta.innerHTML = 'Mostrar respuesta';
+                    visible = false;
+                } else {
+                    textoRespuesta.innerHTML = tarjetas[indice].respuesta;
+                    textoRespuesta.style.display = 'block';
+                    btnRespuesta.innerHTML = 'Ocultar respuesta';
+                    visible = true;
+                }
+            }
+
+            function anterior() {
+                indice = indice - 1;
+                if (indice < 0) {
+                    indice = tarjetas.length - 1;
+                }
+                pintar();
+            }
+
+            function siguiente() {
+                indice = indice + 1;
+                if (indice >= tarjetas.length) {
+                    indice = 0;
+                }
+                pintar();
+            }
+
+            btnRespuesta.addEventListener('click', mostrarRespuesta);
+            tarjeta.addEventListener('click', mostrarRespuesta);
+            btnAnterior.addEventListener('click', anterior);
+            btnSiguiente.addEventListener('click', siguiente);
+
+            pintar();
+        })();
+    </script>
+</body>
+</html>

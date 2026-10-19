@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adivina el Número | Portafolio Emmanuel</title>
+    <link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <a class="back-btn" href="index.html">&larr; Volver al portafolio</a>
+            <span>Adivina el Número</span>
+        </div>
+
+        <div class="card">
+            <h2><span>&#127922;</span>Adivina el Número</h2>
+
+            <p>Estoy pensando en un número entre <strong>1</strong> y <strong>100</strong>. ¿Puedes adivinarlo?</p>
+
+            <input type="number" id="entrada" min="1" max="100" placeholder="Escribe tu intento (1-100)">
+            <button class="btn" id="btnProbar">Probar</button>
+            <button class="btn" id="btnNuevo">Nuevo juego</button>
+
+            <div class="output" id="salida">Introduce un número y pulsa "Probar".</div>
+        </div>
+
+        <div class="footer-note">Portafolio Emmanuel - Adivina el Número</div>
+    </div>
+
+    <script>
+        (function () {
+            var secreto = 0;
+            var intentos = 0;
+            var terminado = false;
+
+            var entrada = document.getElementById('entrada');
+            var salida = document.getElementById('salida');
+            var btnProbar = document.getElementById('btnProbar');
+            var btnNuevo = document.getElementById('btnNuevo');
+
+            function generar() {
+                return Math.floor(Math.random() * 100) + 1;
+            }
+
+            function nuevoJuego() {
+                secreto = generar();
+                intentos = 0;
+                terminado = false;
+                salida.innerHTML = 'Nuevo juego iniciado. Adivina un número entre 1 y 100.';
+                entrada.value = '';
+                entrada.focus();
+            }
+
+            function probar() {
+                if (terminado) {
+                    salida.innerHTML = 'Ya ganaste. Pulsa "Nuevo juego" para jugar de nuevo.';
+                    return;
+                }
+
+                var valor = parseInt(entrada.value, 10);
+
+                if (isNaN(valor)) {
+                    salida.innerHTML = 'Escribe un número válido antes de probar.';
+                    return;
+                }
+
+                if (valor < 1 || valor > 100) {
+                    salida.innerHTML = 'El número debe estar entre 1 y 100.';
+                    return;
+                }
+
+                intentos = intentos + 1;
+
+                if (valor === secreto) {
+                    terminado = true;
+                    salida.innerHTML = '<strong>¡Correcto en ' + intentos + ' ' + (intentos === 1 ? 'intento!' : 'intentos!') + '</strong> El número era ' + secreto + '.';
+                } else if (valor < secreto) {
+                    salida.innerHTML = 'Muy bajo. (Intentos: ' + intentos + ')';
+                } else {
+                    salida.innerHTML = 'Muy alto. (Intentos: ' + intentos + ')';
+                }
+            }
+
+            btnProbar.addEventListener('click', probar);
+            btnNuevo.addEventListener('click', nuevoJuego);
+
+            entrada.addEventListener('keydown', function (evento) {
+                if (evento.keyCode === 13 || evento.which === 13) {
+                    probar();
+                }
+            });
+
+            nuevoJuego();
+        })();
+    </script>
+</body>
+</html>

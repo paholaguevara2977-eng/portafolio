@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer | Portafolio Emmanuel</title>
+    <link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <a class="back-btn" href="index.html">&larr; Volver al portafolio</a>
+            <span>Pomodoro Timer</span>
+        </div>
+
+        <div class="card">
+            <h2><span>&#127813;</span>Pomodoro Timer</h2>
+
+            <p>Modo actual: <strong id="modo">Trabajo</strong> (25 min). Al terminar pasa automáticamente a <strong>Descanso</strong> (5 min).</p>
+
+            <div class="output" id="reloj">25:00</div>
+
+            <button class="btn" id="btnIniciar">Iniciar</button>
+            <button class="btn" id="btnReiniciar">Reiniciar</button>
+        </div>
+
+        <div class="footer-note">Portafolio Emmanuel - Pomodoro Timer</div>
+    </div>
+
+    <script>
+        (function () {
+            var TRABAJO = 25 * 60;
+            var DESCANSO = 5 * 60;
+
+            var restante = TRABAJO;
+            var modo = 'Trabajo';
+            var intervalo = null;
+
+            var reloj = document.getElementById('reloj');
+            var modoTexto = document.getElementById('modo');
+            var btnIniciar = document.getElementById('btnIniciar');
+            var btnReiniciar = document.getElementById('btnReiniciar');
+
+            function dosDigitos(numero) {
+                return (numero < 10 ? '0' : '') + numero;
+            }
+
+            function pintar() {
+                var minutos = Math.floor(restante / 60);
+                var segundos = restante % 60;
+                reloj.innerHTML = '<strong style="font-size:2.2rem;letter-spacing:2px;">' + dosDigitos(minutos) + ':' + dosDigitos(segundos) + '</strong>';
+                document.title = dosDigitos(minutos) + ':' + dosDigitos(segundos) + ' - Pomodoro';
+            }
+
+            function cambiarModo(nuevo) {
+                modo = nuevo;
+                if (modo === 'Trabajo') {
+                    restante = TRABAJO;
+                    modoTexto.innerHTML = 'Trabajo';
+                    modoTexto.style.color = '#ff6347';
+                } else {
+                    restante = DESCANSO;
+                    modoTexto.innerHTML = 'Descanso';
+                    modoTexto.style.color = '#00d2ff';
+                }
+                pintar();
+            }
+
+            function tick() {
+                restante = restante - 1;
+
+                if (restante <= 0) {
+                    parar();
+                    if (modo === 'Trabajo') {
+                        cambiarModo('Descanso');
+                        reloj.innerHTML = '¡Tiempo de descanso! 🌴 <strong>05:00</strong>';
+                    } else {
+                        cambiarModo('Trabajo');
+                        reloj.innerHTML = '¡Descanso terminado! Vuelve al trabajo 🍅 <strong>25:00</strong>';
+                    }
+                    iniciar();
+                    return;
+                }
+
+                pintar();
+            }
+
+            function iniciar() {
+                if (intervalo !== null) {
+                    return;
+                }
+                intervalo = setInterval(tick, 1000);
+                btnIniciar.innerHTML = 'Pausar';
+            }
+
+            function pausar() {
+                parar();
+                btnIniciar.innerHTML = 'Iniciar';
+            }
+
+            function parar() {
+                if (intervalo !== null) {
+                    clearInterval(intervalo);
+                    intervalo = null;
+                }
+                btnIniciar.innerHTML = 'Iniciar';
+            }
+
+            function reiniciar() {
+                parar();
+                cambiarModo('Trabajo');
+                reloj.innerHTML = '<strong>25:00</strong>';
+            }
+
+            btnIniciar.addEventListener('click', function () {
+                if (intervalo === null) {
+                    iniciar();
+                } else {
+                    pausar();
+                }
+            });
+
+            btnReiniciar.addEventListener('click', reiniciar);
+
+            cambiarModo('Trabajo');
+        })();
+    </script>
+</body>
+</html>

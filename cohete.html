@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lanzador de Cohetes | Portafolio Emmanuel</title>
+    <link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <a class="back-btn" href="index.html">&larr; Volver al portafolio</a>
+            <span>Lanzador de Cohetes</span>
+        </div>
+
+        <div class="card">
+            <h2><span>&#128640;</span>Lanzador de Cohetes</h2>
+
+            <p>Pulsa "Despegar" para la cuenta regresiva y ver como el cohete despega.</p>
+
+            <div class="output" id="salida">El cohete esta listo para despegar.</div>
+
+            <div id="pista" style="position:relative;height:300px;margin-top:20px;background:linear-gradient(180deg,#0b1d51 0%,#1b2a6b 60%,#3a2c6b 100%);border-radius:10px;overflow:hidden;">
+                <div id="cohete" style="position:absolute;left:50%;margin-left:-30px;top:250px;font-size:3rem;">&#128640;</div>
+            </div>
+
+            <button class="btn" id="btnDespegar">Despegar</button>
+            <button class="btn" id="btnReiniciar">Reiniciar</button>
+        </div>
+
+        <div class="footer-note">Portafolio Emmanuel - Lanzador de Cohetes</div>
+    </div>
+
+    <script>
+        (function () {
+            var TOPE_INICIO = 250;
+            var TOPE_FINAL = -90;
+            var DURACION = 5000;
+            var PASOS = 100;
+
+            var cohete = document.getElementById('cohete');
+            var salida = document.getElementById('salida');
+            var btnDespegar = document.getElementById('btnDespegar');
+            var btnReiniciar = document.getElementById('btnReiniciar');
+
+            var intervalo = null;
+            var paso = 0;
+            var volando = false;
+
+            function parar() {
+                if (intervalo !== null) {
+                    clearInterval(intervalo);
+                    intervalo = null;
+                }
+            }
+
+            function reiniciar() {
+                parar();
+                paso = 0;
+                volando = false;
+                btnDespegar.disabled = false;
+                cohete.style.transition = 'none';
+                cohete.style.opacity = '1';
+                cohete.style.top = TOPE_INICIO + 'px';
+            }
+
+            function animar() {
+                paso = paso + 1;
+
+                var progreso = paso / PASOS;
+                if (progreso > 1) {
+                    progreso = 1;
+                }
+
+                var posicion = TOPE_INICIO - (TOPE_INICIO - TOPE_FINAL) * progreso;
+                cohete.style.top = posicion + 'px';
+
+                var restante = Math.ceil((1 - progreso) * 5);
+                if (restante < 0) {
+                    restante = 0;
+                }
+                salida.innerHTML = 'Cuenta regresiva: <strong>' + restante + '</strong>';
+
+                if (progreso >= 1) {
+                    parar();
+                    volando = false;
+                    btnDespegar.disabled = false;
+                    cohete.style.opacity = '0';
+                    salida.innerHTML = '<strong>¡Despegue! &#128640;</strong> El cohete desaparecio por arriba.';
+                }
+            }
+
+            function despegar() {
+                if (volando) {
+                    return;
+                }
+
+                parar();
+                paso = 0;
+                volando = true;
+                btnDespegar.disabled = true;
+                cohete.style.opacity = '1';
+                salida.innerHTML = 'Cuenta regresiva: <strong>5</strong>';
+                intervalo = setInterval(animar, DURACION / PASOS);
+            }
+
+            btnDespegar.addEventListener('click', despegar);
+            btnReiniciar.addEventListener('click', function () {
+                reiniciar();
+                salida.innerHTML = 'El cohete esta listo para despegar.';
+            });
+
+            reiniciar();
+        })();
+    </script>
+</body>
+</html>

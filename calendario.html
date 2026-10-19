@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario | Portafolio Emmanuel</title>
+    <link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <a class="back-btn" href="index.html">&larr; Volver al portafolio</a>
+            <span>Calendario</span>
+        </div>
+
+        <div class="card">
+            <h2><span>&#128197;</span>Calendario</h2>
+
+            <div class="output" id="titulo" style="font-size:1.4rem;font-weight:bold;margin-top:0;margin-bottom:15px;text-align:center;"></div>
+
+            <div id="cuadricula" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;"></div>
+
+            <button class="btn" id="btnAnterior">Mes anterior</button>
+            <button class="btn" id="btnSiguiente">Mes siguiente</button>
+        </div>
+
+        <div class="footer-note">Portafolio Emmanuel - Calendario</div>
+    </div>
+
+    <script>
+        (function () {
+            var MESES = [
+                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ];
+
+            var DIAS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+
+            var hoy = new Date();
+
+            var anio = hoy.getFullYear();
+            var mes = hoy.getMonth();
+
+            var titulo = document.getElementById('titulo');
+            var cuadricula = document.getElementById('cuadricula');
+            var btnAnterior = document.getElementById('btnAnterior');
+            var btnSiguiente = document.getElementById('btnSiguiente');
+
+            function celda(texto, color, esHoy) {
+                var estilos = 'padding:12px 4px;text-align:center;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);font-size:1rem;';
+                if (color !== '') {
+                    estilos = estilos + 'color:' + color + ';';
+                }
+                if (esHoy === true) {
+                    estilos = estilos + 'border:2px solid #ff8c00;color:#ff8c00;font-weight:bold;';
+                }
+                return '<div style="' + estilos + '">' + texto + '</div>';
+            }
+
+            function pintar() {
+                titulo.innerHTML = MESES[mes] + ' ' + anio;
+
+                var marcado = '';
+                var i;
+
+                for (i = 0; i < DIAS.length; i++) {
+                    marcado = marcado + celda(DIAS[i], i === 6 ? '#ff5252' : '#00d2ff', false);
+                }
+
+                var primero = new Date(anio, mes, 1);
+                var desplazamiento = (primero.getDay() + 6) % 7;
+                var totalDias = new Date(anio, mes + 1, 0).getDate();
+                var ultimaColumna = (desplazamiento + totalDias - 1) % 7;
+                var finSemana = 6 - ultimaColumna;
+
+                for (i = 0; i < desplazamiento; i++) {
+                    marcado = marcado + celda('', '', false);
+                }
+
+                for (i = 1; i <= totalDias; i++) {
+                    var domingo = (desplazamiento + i - 1) % 7 === 6;
+                    var esHoy = (i === hoy.getDate() && mes === hoy.getMonth() && anio === hoy.getFullYear());
+                    marcado = marcado + celda(i, domingo ? '#ff5252' : '#ffffff', esHoy);
+                }
+
+                for (i = 0; i < finSemana; i++) {
+                    marcado = marcado + celda('', '', false);
+                }
+
+                cuadricula.innerHTML = marcado;
+            }
+
+            function mesAnterior() {
+                mes = mes - 1;
+                if (mes < 0) {
+                    mes = 11;
+                    anio = anio - 1;
+                }
+                pintar();
+            }
+
+            function mesSiguiente() {
+                mes = mes + 1;
+                if (mes > 11) {
+                    mes = 0;
+                    anio = anio + 1;
+                }
+                pintar();
+            }
+
+            btnAnterior.addEventListener('click', mesAnterior);
+            btnSiguiente.addEventListener('click', mesSiguiente);
+
+            pintar();
+        })();
+    </script>
+</body>
+</html>

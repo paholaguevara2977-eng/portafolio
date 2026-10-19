@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>App del Clima</title>
+<link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+<div class="container">
+<div class="topbar">
+<a class="back-btn" href="index.html">← Volver al portafolio</a>
+<span>App del Clima</span>
+</div>
+<div class="card">
+<h2>🌦️ App del Clima</h2>
+<div>
+<select id="ciudad">
+<option value="" selected disabled>Elegir ciudad</option>
+<option value="Santo Domingo" data-temp="31" data-desc="Soleado y caluroso">Santo Domingo</option>
+<option value="Madrid" data-temp="18" data-desc="Nublado con brisa suave">Madrid</option>
+<option value="Buenos Aires" data-temp="24" data-desc="Parcialmente nublado">Buenos Aires</option>
+<option value="Ciudad de Mexico" data-temp="27" data-desc="Clima templado">Ciudad de Mexico</option>
+<option value="Bogota" data-temp="14" data-desc="Lluvia ligera">Bogota</option>
+</select>
+<button class="btn" id="consultar">Consultar</button>
+</div>
+<div class="output" id="resultado" style="margin-top: 15px;">Selecciona una ciudad para consultar el clima</div>
+</div>
+<div class="footer-note">Portafolio Emmanuel - Proyecto 5</div>
+</div>
+<script>
+var ciudad = document.getElementById('ciudad');
+var consultar = document.getElementById('consultar');
+var resultado = document.getElementById('resultado');
+
+function mostrarClima() {
+var opcion = ciudad.options[ciudad.selectedIndex];
+if (opcion.value === '') {
+resultado.textContent = 'Selecciona una ciudad para consultar el clima';
+return;
+}
+var temp = opcion.getAttribute('data-temp');
+var desc = opcion.getAttribute('data-desc');
+resultado.textContent = 'Temperatura: ' + temp + '°C - ' + desc;
+}
+
+ciudad.onchange = mostrarClima;
+consultar.onclick = mostrarClima;
+</script>
+</body>
+</html>

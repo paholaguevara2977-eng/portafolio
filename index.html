@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Portafolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover {
+            color: #00d2ff;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffd700;
+            border-radius: 50px;
+            width: 45px;
+            height: 45px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(20deg);
+            border-color: #ffd700;
+        }
+
+        header {
+            text-align: center;
+            padding: 120px 20px 80px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        header h1 span {
+            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 14px 40px;
+            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(123, 47, 247, 0.4);
+        }
+
+        section {
+            padding: 80px 50px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 35px 30px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: #7b2ff7;
+        }
+
+        .excel-card {
+            border-color: #1db954;
+            background: rgba(29, 185, 84, 0.08);
+        }
+
+        .excel-card:hover {
+            border-color: #1db954;
+        }
+
+        .math-card {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.08);
+        }
+
+        .math-card:hover {
+            border-color: #ffd700;
+        }
+
+        .card-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
+            color: #fff;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(123, 47, 247, 0.4);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .skills {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .skill-bar {
+            margin-bottom: 20px;
+        }
+
+        .skill-bar label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .bar-bg {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
+            border-radius: 10px;
+            width: 0;
+            transition: width 1.5s ease;
+        }
+
+        .projects-controls {
+            max-width: 1100px;
+            margin: 0 auto 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .search-box .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 18px 14px 48px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            color: #fff;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .search-box input::placeholder {
+            color: #888;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #00d2ff;
+            box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.1);
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 10px 22px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            color: #ccc;
+            font-size: 0.9rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: transform 0.3s, border-color 0.3s, color 0.3s, background 0.3s;
+        }
+
+        .filter-btn:hover {
+            border-color: #00d2ff;
+            color: #fff;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
+            border-color: transparent;
+            color: #fff;
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 50px;
+            background: rgba(0, 210, 255, 0.12);
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            color: #00d2ff;
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            color: #aaa;
+            font-size: 1.1rem;
+            padding: 40px 0;
+        }
+
+        .no-results.show {
+            display: block;
+        }
+
+        #contacto {
+            text-align: center;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 25px 35px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .contact-item:hover {
+            border-color: #00d2ff;
+        }
+
+        .contact-item .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            section {
+                padding: 60px 20px;
+            }
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            color: #1a1a2e;
+        }
+
+        body.light nav {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        body.light .nav-links a {
+            color: #333;
+        }
+
+        body.light .nav-links a:hover {
+            color: #7b2ff7;
+        }
+
+        body.light .theme-toggle {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.2);
+            color: #7b2ff7;
+        }
+
+        body.light .theme-toggle:hover {
+            border-color: #7b2ff7;
+        }
+
+        body.light header p {
+            color: #555;
+        }
+
+        body.light .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light .card p,
+        body.light .skill-bar label {
+            color: #555;
+        }
+
+        body.light .excel-card {
+            background: rgba(29, 185, 84, 0.1);
+        }
+
+        body.light .math-card {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        body.light .bar-bg {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light .search-box input {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 0, 0, 0.15);
+            color: #1a1a2e;
+        }
+
+        body.light .filter-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 0, 0, 0.15);
+            color: #333;
+        }
+
+        body.light .filter-btn:hover {
+            border-color: #7b2ff7;
+            color: #7b2ff7;
+        }
+
+        body.light .filter-btn.active {
+            color: #fff;
+        }
+
+        body.light .no-results {
+            color: #666;
+        }
+
+        body.light .contact-item {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light .contact-item p {
+            color: #333;
+        }
+
+        body.light footer {
+            color: #888;
+            border-top-color: rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">EM</div>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#habilidades">Habilidades</a></li>
+            <li><a href="#computacion">Computación</a></li>
+            <li><a href="#matematica">Matemática</a></li>
+            <li><a href="#proyectos">Proyectos</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar tema claro/oscuro">🌙</button>
+    </nav>
+
+    <header id="inicio">
+        <h1>Hola, soy <span>Emmanuel</span></h1>
+        <p>Desarrollador web apasionado por crear experiencias digitales modernas y funcionales.</p>
+        <a href="#contacto" class="btn">Contáctame</a>
+    </header>
+
+    <section id="servicios">
+        <h2 class="section-title">Servicios</h2>
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon">🎨</div>
+                <h3>Diseño Web</h3>
+                <p>Creación de interfaces atractivas y modernas con foco en la experiencia de usuario.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚙️</div>
+                <h3>Desarrollo Frontend</h3>
+                <p>Implementación de sitios web responsivos y optimizados con las últimas tecnologías.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🚀</div>
+                <h3>Optimización</h3>
+                <p>Mejora de rendimiento, velocidad y posicionamiento SEO de tu sitio web.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="habilidades">
+        <h2 class="section-title">Habilidades</h2>
+        <div class="skills">
+            <div class="skill-bar">
+                <label>HTML / CSS</label>
+                <div class="bar-bg"><div class="bar-fill" data-width="90"></div></div>
+            </div>
+            <div class="skill-bar">
+                <label>JavaScript</label>
+                <div class="bar-bg"><div class="bar-fill" data-width="80"></div></div>
+            </div>
+            <div class="skill-bar">
+                <label>React</label>
+                <div class="bar-bg"><div class="bar-fill" data-width="70"></div></div>
+            </div>
+            <div class="skill-bar">
+                <label>Node.js</label>
+                <div class="bar-bg"><div class="bar-fill" data-width="65"></div></div>
+            </div>
+            <div class="skill-bar">
+                <label>Git</label>
+                <div class="bar-bg"><div class="bar-fill" data-width="75"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="computacion">
+        <h2 class="section-title">Computación</h2>
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon">🖥️</div>
+                <h3>Arquitectura de Computadoras</h3>
+                <p>Conocimiento del hardware: procesadores, memoria, almacenamiento y su funcionamiento interno.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌐</div>
+                <h3>Redes</h3>
+                <p>Configuración y administración de redes locales, protocolos TCP/IP y seguridad básica.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🐧</div>
+                <h3>Sistemas Operativos</h3>
+                <p>Manejo de Windows y Linux, administración de procesos, permisos y línea de comandos.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔐</div>
+                <h3>Ciberseguridad</h3>
+                <p>Buenas prácticas de protección de datos, contraseñas seguras y prevención de amenazas.</p>
+            </div>
+            <div class="card excel-card">
+                <div class="card-icon">📊</div>
+                <h3>Clases de Excel</h3>
+                <p>Conocimientos en fórmulas (SUM, IF, VLOOKUP), tablas dinámicas y gráficos para análisis de datos.</p>
+                <a href="especial.html" class="card-btn">Ir a la página especial</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="matematica">
+        <h2 class="section-title">Matemática</h2>
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon">➕</div>
+                <h3>Álgebra</h3>
+                <p>Ecuaciones, inecuaciones, polinomios y funciones lineales y cuadráticas.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📐</div>
+                <h3>Geometría</h3>
+                <p>Figuras, áreas, volúmenes, teoremas y razonamiento espacial.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📈</div>
+                <h3>Estadística</h3>
+                <p>Medidas de tendencia central, probabilidad e interpretación de datos.</p>
+            </div>
+            <div class="card math-card">
+                <div class="card-icon">🧮</div>
+                <h3>Quiz de Matemática</h3>
+                <p>Pon a prueba tus conocimientos matemáticos con preguntas básicas interactivas.</p>
+                <a href="matematicas.html" class="card-btn">Ir a la página especial</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="proyectos">
+        <h2 class="section-title">Proyectos</h2>
+        <div class="projects-controls">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="projectSearch" placeholder="Buscar proyecto..." aria-label="Buscar proyecto">
+            </div>
+            <div class="filter-buttons" role="group" aria-label="Filtrar proyectos por categoría">
+                <button class="filter-btn active" data-filter="todos">Todos</button>
+                <button class="filter-btn" data-filter="juegos">Juegos</button>
+                <button class="filter-btn" data-filter="herramientas">Herramientas</button>
+                <button class="filter-btn" data-filter="educacion">Educación</button>
+                <button class="filter-btn" data-filter="apps">Apps</button>
+                <button class="filter-btn" data-filter="especial">Especial</button>
+            </div>
+        </div>
+        <div class="cards" id="projectsGrid">
+            <div class="card">
+                <div class="card-icon">🦅</div>
+                <h3>Página de Napoleón</h3>
+                <p>Web histórica sobre Napoleón Bonaparte con biografía, batallas, línea de tiempo y legado.</p>
+                <a href="napoleon.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🧮</div>
+                <h3>Quiz de Matemática</h3>
+                <p>Página interactiva con preguntas de matemática básica y verificación automática de respuestas.</p>
+                <a href="matematicas.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🖥️</div>
+                <h3>Exposición de Computación</h3>
+                <p>Sección multimedia sobre arquitectura, redes y sistemas operativos con quiz de Excel básico.</p>
+                <a href="especial.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔢</div>
+                <h3>Calculadora Web</h3>
+                <p>Calculadora con operaciones básicas e historial de resultados.</p>
+                <a href="calculadora.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">⏰</div>
+                <h3>Reloj Digital</h3>
+                <p>Reloj en tiempo real con formato de 12 y 24 horas.</p>
+                <a href="reloj.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🧠</div>
+                <h3>Juego de Memoria</h3>
+                <p>Juego interactivo de cartas para ejercitar la memoria.</p>
+                <a href="memoria.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">📝</div>
+                <h3>Lista de Tareas</h3>
+                <p>Aplicación para crear, marcar y eliminar tareas pendientes.</p>
+                <a href="tareas.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌦️</div>
+                <h3>App del Clima</h3>
+                <p>Consulta del clima por ciudad con iconos dinámicos.</p>
+                <a href="clima.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h3>Panel de Estadísticas</h3>
+                <p>Tablero con gráficas de datos usando Chart.js.</p>
+                <a href="estadisticas.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🖼️</div>
+                <h3>Galería de Imágenes</h3>
+                <p>Portafolio visual con modal de vista ampliada.</p>
+                <a href="galeria.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">✍️</div>
+                <h3>Blog Personal</h3>
+                <p>Plantilla de blog con artículos y sistema de comentarios.</p>
+                <a href="blog.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎯</div>
+                <h3>Encuesta Interactiva</h3>
+                <p>Formulario de encuestas con resultados en tiempo real.</p>
+                <a href="encuesta.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">😀</div>
+                <h3>Traductor de Emojis</h3>
+                <p>Convierte texto en emojis y frases divertidas.</p>
+                <a href="emojis.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">📏</div>
+                <h3>Conversor de Unidades</h3>
+                <p>Convierte longitud, peso, temperatura y moneda.</p>
+                <a href="conversor.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔐</div>
+                <h3>Generador de Contraseñas</h3>
+                <p>Crea contraseñas seguras con nivel de fuerza ajustable.</p>
+                <a href="contrasenas.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎲</div>
+                <h3>Adivina el Número</h3>
+                <p>Juego para adivinar un número aleatorio con pistas.</p>
+                <a href="numero.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🍅</div>
+                <h3>Pomodoro Timer</h3>
+                <p>Temporizador de productividad con descansos automáticos.</p>
+                <a href="pomodoro.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🚀</div>
+                <h3>Lanzador de Cohetes</h3>
+                <p>Simulación animada de un despegue espacial.</p>
+                <a href="cohete.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">💳</div>
+                <h3>Tarjetas Flash</h3>
+                <p>Sistema de estudio con tarjetas de memoria personalizadas.</p>
+                <a href="flash.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">📅</div>
+                <h3>Calendario</h3>
+                <p>Calendario interactivo con marcado de eventos.</p>
+                <a href="calendario.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎮</div>
+                <h3>Juego del Gato</h3>
+                <p>Tres en raya para jugar contra la máquina o un amigo.</p>
+                <a href="gato.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎵</div>
+                <h3>Reproductor de Música</h3>
+                <p>Reproductor con lista de canciones y control de volumen.</p>
+                <a href="musica.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">💬</div>
+                <h3>Chat en Línea</h3>
+                <p>Mini chat en tiempo real entre usuarios.</p>
+                <a href="chat.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔍</div>
+                <h3>Buscador de Filtros</h3>
+                <p>Búsqueda instantánea con filtros por categoría.</p>
+                <a href="buscador.html" class="card-btn">Ver proyecto</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">📖</div>
+                <h3>Lectura en Voz Alta</h3>
+                <p>Convierte texto a voz con velocidad personalizable.</p>
+                <a href="lectura.html" class="card-btn">Ver proyecto</a>
+            </div>
+        </div>
+        <p class="no-results" id="noResults">No se encontraron proyectos con ese criterio.</p>
+    </section>
+
+    <section id="contacto">
+        <h2 class="section-title">Contacto</h2>
+        <div class="contact-info">
+            <div class="contact-item">
+                <div class="icon">📧</div>
+                <p>emmanuel@email.com</p>
+            </div>
+            <div class="contact-item">
+                <div class="icon">📍</div>
+                <p>República Dominicana</p>
+            </div>
+            <div class="contact-item">
+                <div class="icon">💬</div>
+                <p>@emmanuel_dev</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Emmanuel - Todos los derechos reservados</p>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bars = entry.target.querySelectorAll('.bar-fill');
+                    bars.forEach(bar => {
+                        bar.style.width = bar.dataset.width + '%';
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const habilidades = document.getElementById('habilidades');
+        if (habilidades) observer.observe(habilidades);
+
+        const PROJECT_CATEGORIES = {
+            'napoleon.html': 'especial',
+            'matematicas.html': 'educacion',
+            'especial.html': 'educacion',
+            'calculadora.html': 'herramientas',
+            'reloj.html': 'herramientas',
+            'memoria.html': 'juegos',
+            'tareas.html': 'herramientas',
+            'clima.html': 'apps',
+            'estadisticas.html': 'herramientas',
+            'galeria.html': 'especial',
+            'blog.html': 'apps',
+            'encuesta.html': 'herramientas',
+            'emojis.html': 'juegos',
+            'conversor.html': 'herramientas',
+            'contrasenas.html': 'herramientas',
+            'numero.html': 'juegos',
+            'pomodoro.html': 'herramientas',
+            'cohete.html': 'juegos',
+            'flash.html': 'educacion',
+            'calendario.html': 'herramientas',
+            'gato.html': 'juegos',
+            'musica.html': 'apps',
+            'chat.html': 'apps',
+            'buscador.html': 'herramientas',
+            'lectura.html': 'herramientas'
+        };
+
+        const CATEGORY_LABELS = {
+            juegos: 'Juego',
+            herramientas: 'Herramienta',
+            educacion: 'Educación',
+            apps: 'App',
+            especial: 'Especial'
+        };
+
+        const projectCards = Array.from(document.querySelectorAll('#projectsGrid .card'));
+        const projectSearch = document.getElementById('projectSearch');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const noResults = document.getElementById('noResults');
+        let activeCategory = 'todos';
+
+        projectCards.forEach(card => {
+            const link = card.querySelector('a.card-btn');
+            const file = link ? link.getAttribute('href') : '';
+            const category = PROJECT_CATEGORIES[file] || 'otros';
+
+            card.dataset.category = category;
+            card.dataset.search = (
+                card.querySelector('h3').textContent + ' ' +
+                card.querySelector('p').textContent
+            ).toLowerCase();
+
+            const badge = document.createElement('span');
+            badge.className = 'category-badge';
+            badge.textContent = CATEGORY_LABELS[category] || 'Otros';
+            card.appendChild(badge);
+        });
+
+        function applyProjectFilters() {
+            const term = projectSearch.value.trim().toLowerCase();
+            let visible = 0;
+
+            projectCards.forEach(card => {
+                const matchesCategory = activeCategory === 'todos' || card.dataset.category === activeCategory;
+                const matchesSearch = card.dataset.search.includes(term);
+                const show = matchesCategory && matchesSearch;
+
+                card.style.display = show ? '' : 'none';
+                if (show) visible++;
+            });
+
+            noResults.classList.toggle('show', visible === 0);
+        }
+
+        if (projectSearch) {
+            projectSearch.addEventListener('input', applyProjectFilters);
+
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeCategory = btn.dataset.filter;
+                    applyProjectFilters();
+                });
+            });
+        }
+
+        const themeToggle = document.querySelector('.theme-toggle');
+        const savedTheme = localStorage.getItem('theme');
+
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light');
+                themeToggle.textContent = '☀️';
+            } else {
+                document.body.classList.remove('light');
+                themeToggle.textContent = '🌙';
+            }
+        }
+
+        function toggleTheme() {
+            const isLight = document.body.classList.contains('light');
+            const newTheme = isLight ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        }
+
+        applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+    </script>
+
+</body>
+</html>

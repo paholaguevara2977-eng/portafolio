@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat en Línea - Portafolio Emmanuel</title>
+    <link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <a href="index.html" class="back-btn">← Volver al portafolio</a>
+            <span>Chat en Línea</span>
+        </div>
+
+        <div class="card">
+            <h2><span>💬</span> Chat en Línea</h2>
+
+            <p style="color:#aaa; margin-bottom:5px;">Escribe un mensaje y presiona <strong>Enviar</strong> (o la tecla Enter). El bot responde con una frase aleatoria.</p>
+
+            <div class="output" id="chat" style="height:340px; overflow-y:auto; overflow-x:hidden; text-align:left; display:flex; flex-direction:column; gap:8px; padding:18px;">
+                <div style="align-self:flex-start; max-width:75%; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.15); border-radius:12px; border-top-left-radius:4px; padding:10px 14px; text-align:left;">
+                    <strong style="display:block; font-size:0.75rem; color:#ffd700;">Bot</strong>
+                    <span>¡Hola! Soy el bot del portafolio. ¿En qué te ayudo hoy?</span>
+                </div>
+            </div>
+
+            <div style="display:flex; gap:10px; align-items:center; margin-top:15px;">
+                <input type="text" id="mensaje" placeholder="Escribe tu mensaje..." style="margin-bottom:0; flex:1;" onkeypress="if (event.keyCode === 13) { enviar(); }">
+                <button class="btn" onclick="enviar()" style="margin-top:0; white-space:nowrap;">Enviar</button>
+            </div>
+        </div>
+
+        <div class="footer-note">Portafolio Emmanuel - Proyecto 3</div>
+    </div>
+
+    <script>
+        var respuestas = [
+            'Hola!',
+            '¿Cómo estás?',
+            'Interesante...',
+            'Cuéntame más',
+            'Jaja 😄'
+        ];
+
+        function enviar() {
+            var campo = document.getElementById('mensaje');
+            var valor = campo.value.replace(/^\s+|\s+$/g, '');
+
+            if (valor === '') {
+                campo.focus();
+                return;
+            }
+
+            agregarMensaje(valor, 'user');
+            campo.value = '';
+            campo.focus();
+
+            window.setTimeout(function () {
+                agregarMensaje(respuestaAleatoria(), 'bot');
+            }, 500);
+        }
+
+        function respuestaAleatoria() {
+            var indice = Math.floor(Math.random() * respuestas.length);
+            return respuestas[indice];
+        }
+
+        function agregarMensaje(contenido, tipo) {
+            var chat = document.getElementById('chat');
+            var burbuja = document.createElement('div');
+
+            burbuja.style.maxWidth = '75%';
+            burbuja.style.padding = '10px 14px';
+            burbuja.style.textAlign = 'left';
+            burbuja.style.wordWrap = 'break-word';
+            burbuja.style.overflowWrap = 'break-word';
+
+            if (tipo === 'user') {
+                burbuja.style.alignSelf = 'flex-end';
+                burbuja.style.background = 'linear-gradient(90deg, #00d2ff, #7b2ff7)';
+                burbuja.style.borderRadius = '12px';
+                burbuja.style.borderTopRightRadius = '4px';
+            } else {
+                burbuja.style.alignSelf = 'flex-start';
+                burbuja.style.background = 'rgba(255,255,255,0.12)';
+                burbuja.style.border = '1px solid rgba(255,255,255,0.15)';
+                burbuja.style.borderRadius = '12px';
+                burbuja.style.borderTopLeftRadius = '4px';
+            }
+
+            var etiqueta = document.createElement('strong');
+            etiqueta.style.display = 'block';
+            etiqueta.style.fontSize = '0.75rem';
+            etiqueta.innerHTML = tipo === 'user' ? 'Tú' : 'Bot';
+            etiqueta.style.color = tipo === 'user' ? '#0b2a33' : '#ffd700';
+
+            var texto = document.createElement('span');
+            texto.innerHTML = contenido;
+
+            burbuja.appendChild(etiqueta);
+            burbuja.appendChild(texto);
+            chat.appendChild(burbuja);
+
+            chat.scrollTop = chat.scrollHeight;
+        }
+    </script>
+</body>
+</html>

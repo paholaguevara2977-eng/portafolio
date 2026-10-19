@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generador de Contraseñas</title>
+<link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+<div class="container">
+<div class="topbar">
+<a class="back-btn" href="index.html">← Volver al portafolio</a>
+<span>Generador de Contraseñas</span>
+</div>
+<div class="card">
+<h2>🔐 Generador de Contraseñas</h2>
+<p style="margin-bottom:15px;">Longitud de la contraseña:</p>
+<input type="number" id="longitud" value="12" min="6" max="30" placeholder="Entre 6 y 30">
+<label style="display:block; margin-bottom:10px; cursor:pointer;">
+    <input type="checkbox" id="simbolos" checked style="width:auto; margin-right:10px;"> Incluir símbolos
+</label>
+<button class="btn" id="generar">Generar</button>
+<button class="btn" id="copiar">Copiar</button>
+<div class="output" id="resultado">Pulsa "Generar" para crear una contraseña.</div>
+</div>
+<div class="footer-note">Portafolio Emmanuel - Proyecto 6</div>
+</div>
+<script>
+var letras = 'abcdefghijklmnopqrstuvwxyz';
+var mayusculas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var numeros = '0123456789';
+var simbolos = '!#$%&';
+
+function elegir(texto) {
+    return texto.charAt(Math.floor(Math.random() * texto.length));
+}
+
+function mezclar(lista) {
+    var copia = lista.split('');
+    for (var i = copia.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = copia[i];
+        copia[i] = copia[j];
+        copia[j] = temp;
+    }
+    return copia.join('');
+}
+
+function generarPassword(largo, conSimbolos) {
+    var obligatorios = [elegir(mayusculas), elegir(letras), elegir(numeros)];
+    if (conSimbolos) {
+        obligatorios.push(elegir(simbolos));
+    }
+    var todos = letras + mayusculas + numeros;
+    if (conSimbolos) {
+        todos = todos + simbolos;
+    }
+    var resto = '';
+    var i;
+    for (i = obligatorios.length; i < largo; i++) {
+        resto += elegir(todos);
+    }
+    return mezclar(obligatorios.join('') + resto);
+}
+
+function longitudValida() {
+    var entrada = document.getElementById('longitud');
+    var largo = parseInt(entrada.value, 10);
+    if (isNaN(largo)) { largo = 12; }
+    if (largo < 6) { largo = 6; }
+    if (largo > 30) { largo = 30; }
+    entrada.value = largo;
+    return largo;
+}
+
+document.getElementById('generar').onclick = function() {
+    var largo = longitudValida();
+    var conSimbolos = document.getElementById('simbolos').checked;
+    document.getElementById('resultado').textContent = generarPassword(largo, conSimbolos);
+};
+
+document.getElementById('copiar').onclick = function() {
+    var salida = document.getElementById('resultado');
+    var texto = salida.textContent;
+    if (texto === '' || texto.indexOf('Pulsa') !== -1) {
+        salida.textContent = '⚠️ Genera una contraseña primero.';
+        return;
+    }
+    var campo = document.createElement('textarea');
+    campo.value = texto;
+    document.body.appendChild(campo);
+    campo.select();
+    var copiado = false;
+    try {
+        copiado = document.execCommand('copy');
+    } catch (e) {
+        copiado = false;
+    }
+    document.body.removeChild(campo);
+    if (copiado) {
+        salida.textContent = texto + '  ✅ (copiada)';
+    } else {
+        salida.textContent = texto + '  ⚠️ No se pudo copiar, copia manualmente.';
+    }
+};
+</script>
+</body>
+</html>

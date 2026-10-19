@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reloj Digital</title>
+<link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+<div class="container">
+<div class="topbar">
+<a class="back-btn" href="index.html">← Volver al portafolio</a>
+<span>Reloj Digital</span>
+</div>
+<div class="card">
+<h2>⏰ Reloj Digital</h2>
+<div class="output" id="reloj">00:00:00</div>
+<div style="text-align:center; margin-top:15px;">
+<button class="btn" id="btnFormato">Cambiar a formato 12 horas</button>
+</div>
+</div>
+<div class="footer-note">Portafolio Emmanuel - Proyecto 2</div>
+</div>
+<script>
+var reloj = document.getElementById('reloj');
+var btnFormato = document.getElementById('btnFormato');
+var use24 = true;
+
+function pad(n) {
+return (n < 10 ? '0' : '') + n;
+}
+
+function formatearHoras(h) {
+if (use24) return pad(h);
+var sufijo = h >= 12 ? 'PM' : 'AM';
+var h12 = h % 12;
+if (h12 === 0) h12 = 12;
+return (h12 < 10 ? '0' : '') + h12;
+}
+
+function actualizar() {
+var now = new Date();
+reloj.textContent = formatearHoras(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+}
+
+function cambiarFormato() {
+use24 = !use24;
+btnFormato.textContent = use24 ? 'Cambiar a formato 12 horas' : 'Cambiar a formato 24 horas';
+actualizar();
+}
+
+btnFormato.onclick = cambiarFormato;
+actualizar();
+setInterval(actualizar, 1000);
+</script>
+</body>
+</html>

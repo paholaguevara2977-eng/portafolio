@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog Personal</title>
+<link rel="stylesheet" href="proyectos.css">
+</head>
+<body>
+<div class="container">
+<div class="topbar">
+<a class="back-btn" href="index.html">← Volver al portafolio</a>
+<span>Blog Personal</span>
+</div>
+<div class="card">
+<h2>✍️ Blog Personal</h2>
+
+<div class="article" style="margin-bottom:25px;">
+    <h3>💻 Mi primer día con HTML</h3>
+    <p style="margin-bottom:10px;">Aprendí que una página web es solo texto con estructura. Fue sencillo y muy satisfactorio ver mi nombre en pantalla.</p>
+    <p class="more" style="display:none; margin-bottom:10px;">Detalle completo: escribí un archivo .html, lo guardé con extensión UTF-8 y lo abrí en el navegador. Aprendí también la diferencia entre <code>&lt;head&gt;</code> y <code>&lt;body&gt;</code>, y por qué conviene usar UTF-8 para ver bien los acentos y los emojis.</p>
+    <button class="btn more-btn">Leer más</button>
+</div>
+
+<div class="article" style="margin-bottom:25px;">
+    <h3>🎨 Diseñando con CSS</h3>
+    <p style="margin-bottom:10px;">El CSS le da vida a la página: colores, tipografías, espaciados y bordes redondeados.</p>
+    <p class="more" style="display:none; margin-bottom:10px;">Detalle completo: aprendí sobre selectores de clase, el modelo de caja con <code>box-sizing: border-box</code> y cómo los degradados con <code>linear-gradient</code> dan un aspecto profesional. También las media queries para que se vea bien en el celular.</p>
+    <button class="btn more-btn">Leer más</button>
+</div>
+
+<div class="article" style="margin-bottom:25px;">
+    <h3>🚀 Mi opinión sobre JavaScript</h3>
+    <p style="margin-bottom:10px;">Con JavaScript una página deja de ser estática y empieza a responder al usuario.</p>
+    <p class="more" style="display:none; margin-bottom:10px;">Detalle completo: desde <code>addEventListener</code> y el <code>event</code> hasta manipulating el DOM con <code>querySelector</code>. Me gusta que el navegador sea el entorno donde se ejecuta el código, sin instalar nada.</p>
+    <button class="btn more-btn">Leer más</button>
+</div>
+
+<h3 style="margin-top:30px;">💬 Deja tu comentario</h3>
+<input type="text" id="commentInput" placeholder="Escribe un comentario...">
+<button class="btn" id="addComment">Publicar comentario</button>
+<div class="output" id="aviso"></div>
+<div id="comments" style="margin-top:20px;"></div>
+</div>
+<div class="footer-note">Portafolio Emmanuel - Proyecto 2</div>
+</div>
+<script>
+var botones = document.getElementsByClassName('more-btn');
+for (var i = 0; i < botones.length; i++) {
+    botones[i].onclick = function() {
+        var parrafo = this.parentNode.getElementsByClassName('more')[0];
+        if (parrafo.style.display === 'none' || parrafo.style.display === '') {
+            parrafo.style.display = 'block';
+            this.textContent = 'Ocultar';
+        } else {
+            parrafo.style.display = 'none';
+            this.textContent = 'Leer más';
+        }
+    };
+}
+
+var lista = document.getElementById('comments');
+var aviso = document.getElementById('aviso');
+document.getElementById('addComment').onclick = function() {
+    var input = document.getElementById('commentInput');
+    var texto = input.value;
+    if (texto.replace(/^\s+|\s+$/g, '') === '') {
+        aviso.textContent = '⚠️ Escribe un comentario antes de publicar.';
+        return;
+    }
+    aviso.textContent = '';
+    var item = document.createElement('div');
+    item.setAttribute('style', 'padding:12px; margin-bottom:10px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:10px;');
+
+    var cuerpo = document.createElement('p');
+    cuerpo.textContent = texto;
+
+    var fecha = new Date();
+    var dia = fecha.getDate();
+    var mes = fecha.getMonth() + 1;
+    var anio = fecha.getFullYear();
+    var hh = fecha.getHours();
+    var mm = fecha.getMinutes();
+    if (hh < 10) { hh = '0' + hh; }
+    if (mm < 10) { mm = '0' + mm; }
+
+    var meta = document.createElement('small');
+    meta.setAttribute('style', 'color:#00d2ff;');
+    meta.textContent = '📅 ' + dia + '/' + mes + '/' + anio + ' - ' + hh + ':' + mm;
+
+    item.appendChild(cuerpo);
+    item.appendChild(meta);
+    lista.appendChild(item);
+
+    input.value = '';
+};
+</script>
+</body>
+</html>
