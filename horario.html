@@ -114,12 +114,13 @@
             overflow-x: auto;
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 820px;
+            margin: 0 auto;
         }
 
         table.schedule {
             width: 100%;
             border-collapse: collapse;
-            min-width: 720px;
         }
 
         .schedule th,
@@ -144,13 +145,13 @@
             font-weight: 600;
             font-size: 0.8rem;
             white-space: nowrap;
-            width: 110px;
+            width: 100px;
         }
 
         .schedule td {
             cursor: text;
             transition: background 0.2s;
-            min-width: 110px;
+            min-width: 80px;
             height: 58px;
         }
 
@@ -327,7 +328,7 @@
             <div class="schedule-head">
                 <div>
                     <h2><span>&#128197;</span>Mi Horario Escolar</h2>
-                    <p class="hint">Haz clic en una celda para escribir tus materias y horas. Todo se guarda automáticamente en este navegador.</p>
+                    <p class="hint">Solo se muestran los días con clase. Haz clic en una celda para escribir la materia o la hora; se guarda automáticamente en este navegador.</p>
                 </div>
                 <div class="today-badge" id="todayBadge">Hoy</div>
             </div>
@@ -370,22 +371,15 @@
 
     <script>
         (function () {
-            var DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+            var DAY_NAMES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            var DAYS = ['Lunes', 'Viernes'];
             var ROWS = [
-                { time: '08:00 – 08:45' },
-                { time: '08:45 – 09:30' },
-                { time: '09:30 – 10:15' },
-                { break: true, label: 'Recreo', time: '10:15 – 10:45' },
-                { time: '10:45 – 11:30' },
-                { time: '11:30 – 12:15' },
-                { time: '12:15 – 13:00' },
-                { break: true, label: 'Almuerzo', time: '13:00 – 15:00' },
-                { time: '15:00 – 15:45' }
+                { time: '15:00 – 16:00' }
             ];
 
             var DEFAULTS = {
-                'cell-8-0': 'Computación',
-                'cell-8-4': 'Matemática'
+                'cell-0-0': 'Computación',
+                'cell-0-1': 'Matemática'
             };
 
             var STORAGE_KEY = 'emmanuel-horario-v1';
@@ -506,8 +500,8 @@
             }
 
             function todayIndex() {
-                var index = (new Date().getDay() + 6) % 7;
-                return index <= 4 ? index : -1;
+                var name = DAY_NAMES[new Date().getDay()];
+                return DAYS.indexOf(name);
             }
 
             function updateNow() {
