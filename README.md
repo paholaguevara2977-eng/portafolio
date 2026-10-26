@@ -108,6 +108,7 @@ Las tarjetas de la sección **Proyectos** se filtran con el objeto `PROJECT_CATE
 ## 5. Funcionamiento de `index.html`
 
 - **Secciones:** Inicio, Servicios, Habilidades, Computación, Matemática, Proyectos y Contacto.
+- **Hero:** botones **Contáctame** y **Ver mi horario**; el segundo lleva directamente a `horario.html`.
 - **Tema claro/oscuro:** el botón de la barra superior alterna el tema y guarda la preferencia en `localStorage` con la clave `theme`.
 - **Habilidades:** las barras se animan al entrar en pantalla con `IntersectionObserver`.
 - **Buscador de proyectos:** filtra por título y descripción en tiempo real.
@@ -177,6 +178,7 @@ Actualmente las celdas empiezan vacías y el usuario las completa. Para dejar un
 
 | Fecha | Commit | Cambio |
 |---|---|---|
+| 2026-10-26 | `—` | Se añadió el botón **Ver mi horario** en el hero de la portada, con estilos para tema claro y oscuro. |
 | 2026-10-26 | `76cc8e4` | Se agregó `horario.html` (horario escolar editable), su tarjeta en Proyectos y su categoría `educacion`. Verificado en local y en el sitio publicado. |
 | 2026-10-26 | `75184be` | Se agregó `favicon.ico` a todas las páginas. |
 | — | `f1b9c8b` | Primer commit del portafolio web. |
@@ -189,6 +191,7 @@ Actualmente las celdas empiezan vacías y el usuario las completa. Para dejar un
 - El día actual se resalta correctamente (probado en lunes).
 - Los datos persisten después de recargar (probado con “Matemática” y “Lengua Española”).
 - El filtro **Educación** muestra 4 proyectos, incluido Horario Escolar.
+- El botón **Ver mi horario** del hero apunta a `horario.html`, está centrado y se adapta a los temas claro y oscuro.
 - Sin errores en la consola del navegador.
 
 ---

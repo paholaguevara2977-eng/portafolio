@@ -115,6 +115,28 @@
             box-shadow: 0 10px 30px rgba(123, 47, 247, 0.4);
         }
 
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .hero-buttons .btn {
+            margin-top: 0;
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-outline:hover {
+            border-color: #00d2ff;
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.25);
+        }
+
         section {
             padding: 80px 50px;
         }
@@ -407,6 +429,17 @@
             border-color: #7b2ff7;
         }
 
+        body.light .btn-outline {
+            background: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.25);
+            color: #1a1a2e;
+        }
+
+        body.light .btn-outline:hover {
+            border-color: #7b2ff7;
+            box-shadow: 0 10px 30px rgba(123, 47, 247, 0.2);
+        }
+
         body.light header p {
             color: #555;
         }
@@ -492,7 +525,10 @@
     <header id="inicio">
         <h1>Hola, soy <span>Emmanuel</span></h1>
         <p>Desarrollador web apasionado por crear experiencias digitales modernas y funcionales.</p>
-        <a href="#contacto" class="btn">Contáctame</a>
+        <div class="hero-buttons">
+            <a href="#contacto" class="btn">Contáctame</a>
+            <a href="horario.html" class="btn btn-outline">🗓️ Ver mi horario</a>
+        </div>
     </header>
 
     <section id="servicios">
