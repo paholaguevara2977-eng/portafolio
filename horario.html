@@ -321,8 +321,18 @@
                 { break: true, label: 'Recreo', time: '10:15 – 10:45' },
                 { time: '10:45 – 11:30' },
                 { time: '11:30 – 12:15' },
-                { time: '12:15 – 13:00' }
+                { time: '12:15 – 13:00' },
+                { break: true, label: 'Almuerzo', time: '13:00 – 15:00' },
+                { time: '15:00 – 15:45' },
+                { time: '15:45 – 16:30' }
             ];
+
+            var DEFAULTS = {
+                'cell-8-0': 'Matemática',
+                'cell-8-2': 'Matemática',
+                'cell-9-0': 'Computación',
+                'cell-9-2': 'Computación'
+            };
 
             var STORAGE_KEY = 'emmanuel-horario-v1';
 
@@ -363,6 +373,12 @@
 
             var editableCells = Array.prototype.slice.call(document.querySelectorAll('[data-key]'));
             var subjectCells = Array.prototype.slice.call(document.querySelectorAll('td[data-key]'));
+
+            editableCells.forEach(function (el) {
+                if (DEFAULTS[el.dataset.key]) {
+                    el.textContent = DEFAULTS[el.dataset.key];
+                }
+            });
 
             function getData() {
                 var data = {};

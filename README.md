@@ -136,7 +136,8 @@ Página añadida el **26 de octubre de 2026**.
 
 ### Funciones
 
-- Tabla semanal de **lunes a viernes** con 7 períodos y un recreo.
+- Tabla semanal de **lunes a viernes** con 8 períodos, recreo y almuerzo.
+- Materias precargadas: **Matemática** y **Computación** los **lunes y miércoles** desde las **3:00 PM** (3:00–3:45 Matemática y 3:45–4:30 Computación).
 - Materias y horas **editables**: se hace clic en una celda y se escribe.
 - **Guardado automático** en `localStorage` con la clave:
   ```text
@@ -149,22 +150,28 @@ Página añadida el **26 de octubre de 2026**.
 
 ### Horario por defecto
 
-| Período | Hora |
-|---|---|
-| 1 | 08:00 – 08:45 |
-| 2 | 08:45 – 09:30 |
-| 3 | 09:30 – 10:15 |
-| Recreo | 10:15 – 10:45 |
-| 4 | 10:45 – 11:30 |
-| 5 | 11:30 – 12:15 |
-| 6 | 12:15 – 13:00 |
+| Período | Hora | Materia por defecto |
+|---|---|---|
+| 1 | 08:00 – 08:45 | — |
+| 2 | 08:45 – 09:30 | — |
+| 3 | 09:30 – 10:15 | — |
+| Recreo | 10:15 – 10:45 | — |
+| 4 | 10:45 – 11:30 | — |
+| 5 | 11:30 – 12:15 | — |
+| 6 | 12:15 – 13:00 | — |
+| Almuerzo | 13:00 – 15:00 | — |
+| 7 | 15:00 – 15:45 | Matemática (lunes y miércoles) |
+| 8 | 15:45 – 16:30 | Computación (lunes y miércoles) |
 
 ### Cómo dejar materias fijas por defecto
 
-Actualmente las celdas empiezan vacías y el usuario las completa. Para dejar un horario prellenado:
-
-1. Editar el arreglo `ROWS` en `horario.html` si cambian los períodos.
-2. Asignar el texto inicial a las celdas generadas, o cargar un objeto por defecto antes de `restore()`.
+1. Editar el arreglo `ROWS` en `horario.html` si cambian los períodos u horas.
+2. Editar el objeto `DEFAULTS` para asignar materias iniciales. Las claves siguen el formato `cell-fila-columna`, por ejemplo:
+   ```js
+   'cell-8-0': 'Matemática'  // fila 8, lunes
+   ```
+   Las columnas son: 0 = lunes, 1 = martes, 2 = miércoles, 3 = jueves, 4 = viernes.
+3. Los cambios guardados por el usuario en `localStorage` tienen prioridad sobre `DEFAULTS`.
 
 ### Limitaciones conocidas
 
@@ -178,6 +185,7 @@ Actualmente las celdas empiezan vacías y el usuario las completa. Para dejar un
 
 | Fecha | Commit | Cambio |
 |---|---|---|
+| 2026-10-26 | `—` | Se añadieron **Matemática** y **Computación** a las 3:00 PM de los lunes y miércoles, con el bloque de tarde y el objeto `DEFAULTS`. |
 | 2026-10-26 | `—` | Se añadió el botón **Ver mi horario** en el hero de la portada, con estilos para tema claro y oscuro. |
 | 2026-10-26 | `76cc8e4` | Se agregó `horario.html` (horario escolar editable), su tarjeta en Proyectos y su categoría `educacion`. Verificado en local y en el sitio publicado. |
 | 2026-10-26 | `75184be` | Se agregó `favicon.ico` a todas las páginas. |
@@ -187,9 +195,10 @@ Actualmente las celdas empiezan vacías y el usuario las completa. Para dejar un
 
 - Página publicada responde **HTTP 200**: `/portafolio/horario.html`.
 - La portada publicada incluye la tarjeta **Horario Escolar**.
-- La tabla genera 7 filas y 30 celdas editables.
+- La tabla genera 10 filas y 40 celdas editables.
+- Matemática aparece los lunes y miércoles a las 3:00 PM; Computación, los mismos días a las 3:45 PM.
 - El día actual se resalta correctamente (probado en lunes).
-- Los datos persisten después de recargar (probado con “Matemática” y “Lengua Española”).
+- Los datos persisten después de recargar y tienen prioridad sobre los valores por defecto (probado con “Física”).
 - El filtro **Educación** muestra 4 proyectos, incluido Horario Escolar.
 - El botón **Ver mi horario** del hero apunta a `horario.html`, está centrado y se adapta a los temas claro y oscuro.
 - Sin errores en la consola del navegador.
