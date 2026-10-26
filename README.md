@@ -137,7 +137,7 @@ Página añadida el **26 de octubre de 2026**.
 ### Funciones
 
 - Tabla semanal de **lunes a viernes** con 8 períodos, recreo y almuerzo.
-- Materias precargadas: **Matemática** y **Computación** los **lunes y miércoles** desde las **3:00 PM** (3:00–3:45 Matemática y 3:45–4:30 Computación).
+- Materias precargadas: **Matemática** y **Computación** los **lunes y viernes** desde las **3:00 PM** (3:00–3:45 Matemática y 3:45–4:30 Computación).
 - Materias y horas **editables**: se hace clic en una celda y se escribe.
 - **Guardado automático** en `localStorage` con la clave:
   ```text
@@ -160,8 +160,8 @@ Página añadida el **26 de octubre de 2026**.
 | 5 | 11:30 – 12:15 | — |
 | 6 | 12:15 – 13:00 | — |
 | Almuerzo | 13:00 – 15:00 | — |
-| 7 | 15:00 – 15:45 | Matemática (lunes y miércoles) |
-| 8 | 15:45 – 16:30 | Computación (lunes y miércoles) |
+| 7 | 15:00 – 15:45 | Matemática (lunes y viernes) |
+| 8 | 15:45 – 16:30 | Computación (lunes y viernes) |
 
 ### Cómo dejar materias fijas por defecto
 
@@ -185,6 +185,7 @@ Página añadida el **26 de octubre de 2026**.
 
 | Fecha | Commit | Cambio |
 |---|---|---|
+| 2026-10-26 | `—` | Corrección: Matemática y Computación van los **lunes y viernes**, no los miércoles. |
 | 2026-10-26 | `—` | Se añadieron **Matemática** y **Computación** a las 3:00 PM de los lunes y miércoles, con el bloque de tarde y el objeto `DEFAULTS`. |
 | 2026-10-26 | `—` | Se añadió el botón **Ver mi horario** en el hero de la portada, con estilos para tema claro y oscuro. |
 | 2026-10-26 | `76cc8e4` | Se agregó `horario.html` (horario escolar editable), su tarjeta en Proyectos y su categoría `educacion`. Verificado en local y en el sitio publicado. |
@@ -196,7 +197,7 @@ Página añadida el **26 de octubre de 2026**.
 - Página publicada responde **HTTP 200**: `/portafolio/horario.html`.
 - La portada publicada incluye la tarjeta **Horario Escolar**.
 - La tabla genera 10 filas y 40 celdas editables.
-- Matemática aparece los lunes y miércoles a las 3:00 PM; Computación, los mismos días a las 3:45 PM.
+- Matemática aparece los lunes y viernes a las 3:00 PM; Computación, los mismos días a las 3:45 PM. El miércoles queda libre en ese horario.
 - El día actual se resalta correctamente (probado en lunes).
 - Los datos persisten después de recargar y tienen prioridad sobre los valores por defecto (probado con “Física”).
 - El filtro **Educación** muestra 4 proyectos, incluido Horario Escolar.
