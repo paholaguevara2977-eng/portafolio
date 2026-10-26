@@ -149,31 +149,8 @@
         }
 
         .schedule td {
-            cursor: text;
-            transition: background 0.2s;
             min-width: 80px;
             height: 58px;
-        }
-
-        .schedule td:hover {
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .schedule td:focus,
-        .schedule th[contenteditable]:focus {
-            outline: 2px solid #00d2ff;
-            outline-offset: -2px;
-            background: rgba(0, 210, 255, 0.08);
-        }
-
-        .schedule th[contenteditable] {
-            cursor: text;
-        }
-
-        .schedule td.empty::before {
-            content: 'Materia';
-            color: #555;
-            font-style: italic;
         }
 
         .schedule tr.break-row th,
@@ -233,33 +210,12 @@
             background: #ffd700;
         }
 
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: #1db954;
-            color: #fff;
-            padding: 10px 22px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s, transform 0.3s;
-            z-index: 200;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
         @media (max-width: 768px) {
             .schedule-card {
                 padding: 18px;
             }
             .schedule td {
-                min-width: 92px;
+                min-width: 76px;
                 height: 52px;
             }
         }
@@ -275,7 +231,6 @@
             .class-link,
             .hint,
             .legend,
-            .toast,
             .footer-note {
                 display: none !important;
             }
@@ -292,9 +247,6 @@
             .schedule td {
                 border: 1px solid #999;
                 color: #000 !important;
-            }
-            .schedule td.empty::before {
-                content: '';
             }
             .today-badge {
                 background: #eee !important;
@@ -328,7 +280,7 @@
             <div class="schedule-head">
                 <div>
                     <h2><span>&#128197;</span>Mi Horario Escolar</h2>
-                    <p class="hint">Solo se muestran los días con clase. Haz clic en una celda para escribir la materia o la hora; se guarda automáticamente en este navegador.</p>
+                    <p class="hint">Horario de solo lectura: Computación los lunes y Matemática los viernes, de 3:00 a 4:00 PM.</p>
                 </div>
                 <div class="today-badge" id="todayBadge">Hoy</div>
             </div>
@@ -344,8 +296,6 @@
 
             <div class="toolbar">
                 <button class="btn btn-sm" id="btnHoy" type="button">&#128205; Ir a hoy</button>
-                <button class="btn btn-sm btn-ghost" id="btnBorrar" type="button">&#129529; Borrar materias</button>
-                <button class="btn btn-sm btn-ghost" id="btnReset" type="button">&#8634; Restablecer</button>
                 <button class="btn btn-sm btn-ghost" id="btnImprimir" type="button">&#128424; Imprimir</button>
             </div>
 
@@ -367,8 +317,6 @@
         <div class="footer-note">Portafolio Emmanuel - Horario Escolar</div>
     </div>
 
-    <div class="toast" id="toast">Guardado &#10003;</div>
-
     <script>
         (function () {
             var DAY_NAMES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -382,15 +330,9 @@
                 'cell-0-1': 'Matemática'
             };
 
-            var STORAGE_KEY = 'emmanuel-horario-v1';
-
             var headRow = document.getElementById('headRow');
             var bodyRows = document.getElementById('bodyRows');
             var todayBadge = document.getElementById('todayBadge');
-            var toast = document.getElementById('toast');
-
-            var saveTimer = null;
-            var toastTimer = null;
 
             headRow.innerHTML = '<th>Hora</th>' + DAYS.map(function (day) {
                 return '<th data-day="' + day + '">' + day + '</th>';
@@ -405,87 +347,26 @@
                         '<th>' + row.time + '</th>' +
                         '<td colspan="' + DAYS.length + '">' + row.label + '</td>';
                 } else {
-                    var cells = DAYS.map(function (day, dayIndex) {
-                        return '<td contenteditable="true" spellcheck="false" ' +
-                            'data-day="' + day + '" data-key="cell-' + rowIndex + '-' + dayIndex + '"></td>';
-                    }).join('');
+                    var timeCell = document.createElement('th');
+                    timeCell.textContent = row.time;
+                    tr.appendChild(timeCell);
 
-                    tr.innerHTML =
-                        '<th contenteditable="true" spellcheck="false" data-key="time-' + rowIndex + '">' +
-                        row.time + '</th>' + cells;
+                    DAYS.forEach(function (day, dayIndex) {
+                        var cell = document.createElement('td');
+                        cell.dataset.day = day;
+
+                        var value = DEFAULTS['cell-' + rowIndex + '-' + dayIndex];
+                        if (value) {
+                            cell.textContent = value;
+                        }
+
+                        tr.appendChild(cell);
+                    });
                 }
 
                 tr.dataset.row = rowIndex;
                 bodyRows.appendChild(tr);
             });
-
-            var editableCells = Array.prototype.slice.call(document.querySelectorAll('[data-key]'));
-            var subjectCells = Array.prototype.slice.call(document.querySelectorAll('td[data-key]'));
-
-            editableCells.forEach(function (el) {
-                if (DEFAULTS[el.dataset.key]) {
-                    el.textContent = DEFAULTS[el.dataset.key];
-                }
-            });
-
-            function getData() {
-                var data = {};
-                editableCells.forEach(function (el) {
-                    data[el.dataset.key] = el.textContent.trim();
-                });
-                return data;
-            }
-
-            function save(silent) {
-                try {
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(getData()));
-                } catch (error) {
-                    return;
-                }
-                if (!silent) {
-                    showToast();
-                }
-            }
-
-            function saveLater() {
-                clearTimeout(saveTimer);
-                saveTimer = setTimeout(function () {
-                    save(false);
-                }, 500);
-            }
-
-            function showToast() {
-                toast.classList.add('show');
-                clearTimeout(toastTimer);
-                toastTimer = setTimeout(function () {
-                    toast.classList.remove('show');
-                }, 1200);
-            }
-
-            function refreshEmpty() {
-                subjectCells.forEach(function (cell) {
-                    cell.classList.toggle('empty', cell.textContent.trim() === '');
-                });
-            }
-
-            function restore() {
-                var data = null;
-                try {
-                    data = JSON.parse(localStorage.getItem(STORAGE_KEY));
-                } catch (error) {
-                    data = null;
-                }
-
-                if (!data) {
-                    return;
-                }
-
-                editableCells.forEach(function (el) {
-                    if (typeof data[el.dataset.key] === 'string') {
-                        el.textContent = data[el.dataset.key];
-                    }
-                });
-            }
 
             function parseRange(text) {
                 var match = text.replace(/[–—]/g, '-').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
@@ -515,7 +396,7 @@
                     if (tr.classList.contains('break-row')) {
                         return;
                     }
-                    var timeCell = tr.querySelector('th[data-key]');
+                    var timeCell = tr.querySelector('th');
                     var range = timeCell ? parseRange(timeCell.textContent) : null;
                     if (range && minutes >= range.start && minutes < range.end) {
                         nowRow = parseInt(tr.dataset.row, 10);
@@ -545,35 +426,6 @@
                 todayBadge.textContent = dateText.charAt(0).toUpperCase() + dateText.slice(1);
             }
 
-            editableCells.forEach(function (el) {
-                el.addEventListener('input', function () {
-                    refreshEmpty();
-                    saveLater();
-                    updateNow();
-                });
-
-                el.addEventListener('blur', function () {
-                    if (el.isContentEditable && el.textContent.trim() === '') {
-                        el.textContent = '';
-                    }
-                    refreshEmpty();
-                    save(true);
-                });
-
-                el.addEventListener('keydown', function (event) {
-                    if (event.key === 'Enter') {
-                        event.preventDefault();
-                        el.blur();
-                    }
-                });
-
-                el.addEventListener('paste', function (event) {
-                    event.preventDefault();
-                    var text = (event.clipboardData || window.clipboardData).getData('text');
-                    document.execCommand('insertText', false, text.replace(/\s+/g, ' ').trim());
-                });
-            });
-
             document.getElementById('btnHoy').addEventListener('click', function () {
                 var dayIndex = todayIndex();
                 if (dayIndex < 0) {
@@ -586,32 +438,10 @@
                 }
             });
 
-            document.getElementById('btnBorrar').addEventListener('click', function () {
-                if (!window.confirm('¿Borrar todas las materias escritas? Las horas se mantienen.')) {
-                    return;
-                }
-                subjectCells.forEach(function (cell) {
-                    cell.textContent = '';
-                });
-                refreshEmpty();
-                save(true);
-                showToast();
-            });
-
-            document.getElementById('btnReset').addEventListener('click', function () {
-                if (!window.confirm('¿Restablecer el horario a los valores iniciales? Se borrarán tus cambios.')) {
-                    return;
-                }
-                localStorage.removeItem(STORAGE_KEY);
-                window.location.reload();
-            });
-
             document.getElementById('btnImprimir').addEventListener('click', function () {
                 window.print();
             });
 
-            restore();
-            refreshEmpty();
             updateNow();
             setInterval(updateNow, 30000);
         })();

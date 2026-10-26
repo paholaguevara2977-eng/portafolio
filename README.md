@@ -38,7 +38,7 @@ portafolio/
 ├── index.html          # Portada: presentación, servicios, habilidades, proyectos y contacto
 ├── proyectos.css       # Estilos compartidos por las páginas de proyectos
 ├── favicon.ico         # Icono del sitio
-├── horario.html        # Horario escolar editable
+├── horario.html        # Horario escolar (solo lectura)
 ├── napoleon.html
 ├── matematicas.html
 ├── especial.html
@@ -96,7 +96,7 @@ Las tarjetas de la sección **Proyectos** se filtran con el objeto `PROJECT_CATE
 | `cohete.html` | Simulación animada de despegue | Juegos |
 | `flash.html` | Tarjetas de estudio | Educación |
 | `calendario.html` | Calendario interactivo con eventos | Herramientas |
-| `horario.html` | Horario escolar semanal editable | Educación |
+| `horario.html` | Horario escolar semanal de solo lectura | Educación |
 | `gato.html` | Tres en raya contra la máquina o un amigo | Juegos |
 | `musica.html` | Reproductor de música | Apps |
 | `chat.html` | Mini chat en línea | Apps |
@@ -137,15 +137,11 @@ Página añadida el **26 de octubre de 2026**.
 ### Funciones
 
 - Tabla con los días que tienen clase (**lunes y viernes**) y un solo período de **3:00 a 4:00 PM**. Se quitaron los días y períodos sin clase.
-- Materias precargadas: **Computación** los lunes y **Matemática** los viernes, de 3:00 a 4:00 PM.
-- Materias y horas **editables**: se hace clic en una celda y se escribe.
+- Materias fijas: **Computación** los lunes y **Matemática** los viernes, de 3:00 a 4:00 PM.
+- Horario de **solo lectura**: no se puede editar desde la página.
 - Botón **Entrar a las clases** con el enlace de Google Meet: https://meet.google.com/kab-jgny-ewu (abre en una pestaña nueva).
-- **Guardado automático** en `localStorage` con la clave:
-  ```text
-  emmanuel-horario-v1
-  ```
 - Resalta el **día actual** y el **período de clase en curso**.
-- Botones: **Ir a hoy**, **Borrar materias**, **Restablecer** e **Imprimir**.
+- Botones: **Ir a hoy** e **Imprimir**.
 - Diseño responsive con desplazamiento horizontal en pantallas pequeñas.
 - Estilos de impresión para obtener una hoja limpia en blanco y negro.
 
@@ -155,16 +151,16 @@ Página añadida el **26 de octubre de 2026**.
 |---|---|---|
 | 1 | 15:00 – 16:00 | Computación (lunes) / Matemática (viernes) |
 
-### Cómo dejar materias fijas por defecto
+### Cómo cambiar el horario
 
-1. Editar el arreglo `ROWS` en `horario.html` si cambian los períodos u horas.
-2. Editar el arreglo `DAYS` para cambiar los días visibles.
-3. Editar el objeto `DEFAULTS` para asignar materias iniciales. Las claves siguen el formato `cell-fila-columna`, por ejemplo:
+1. Editar el arreglo `DAYS` para cambiar los días visibles.
+2. Editar el arreglo `ROWS` si cambian los períodos u horas.
+3. Editar el objeto `DEFAULTS` para asignar las materias. Las claves siguen el formato `cell-fila-columna`, por ejemplo:
    ```js
    'cell-0-0': 'Computación'  // fila 0, lunes
    ```
    Las columnas son: 0 = lunes, 1 = viernes (solo los días incluidos en `DAYS`).
-4. Los cambios guardados por el usuario en `localStorage` tienen prioridad sobre `DEFAULTS`.
+4. Guardar los cambios y volver a publicar. No hay edición ni guardado desde la página.
 
 ### Enlace de clases
 
@@ -173,9 +169,8 @@ Página añadida el **26 de octubre de 2026**.
 
 ### Limitaciones conocidas
 
-- El horario se guarda **solo en el navegador y dispositivo** donde se edita; no se sincroniza entre equipos.
-- Si se borran los datos del navegador, se pierde el horario personalizado.
-- Para compartir el horario real con todos los visitantes hay que dejarlo escrito directamente en el HTML (o usar un backend).
+- Para cambiar el horario hay que editar el HTML y volver a publicar el sitio.
+- El resaltado del día y de la hora actual depende de la fecha y hora del dispositivo.
 
 ---
 
@@ -183,6 +178,7 @@ Página añadida el **26 de octubre de 2026**.
 
 | Fecha | Commit | Cambio |
 |---|---|---|
+| 2026-10-26 | `—` | Se quitó la edición: el horario ahora es de **solo lectura** y se eliminaron el guardado automático y los botones **Borrar materias** y **Restablecer**. |
 | 2026-10-26 | `—` | Horario reducido a un solo bloque de **3:00 a 4:00 PM**: lunes Computación y viernes Matemática. Se quitaron los días y períodos vacíos. |
 | 2026-10-26 | `—` | Ajuste: **lunes Computación** y **viernes Matemática**, una hora a las 3:00 PM. |
 | 2026-10-26 | `—` | Se añadió el botón **Entrar a las clases** con el enlace de Google Meet en `horario.html`. |
@@ -197,11 +193,11 @@ Página añadida el **26 de octubre de 2026**.
 
 - Página publicada responde **HTTP 200**: `/portafolio/horario.html`.
 - La portada publicada incluye la tarjeta **Horario Escolar**.
-- La tabla genera 1 fila y 2 celdas editables.
+- La tabla genera 1 fila con 2 celdas de materias.
 - Solo se muestran las columnas **Lunes** y **Viernes**; no quedan cuadros vacíos.
 - Computación aparece el lunes y Matemática el viernes, de 3:00 a 4:00 PM.
+- El horario es de **solo lectura**: no hay celdas editables, guardado automático ni botones de borrar/restablecer.
 - El día actual se resalta correctamente (probado en lunes).
-- Los datos persisten después de recargar y tienen prioridad sobre los valores por defecto (probado con “Física”).
 - El filtro **Educación** muestra 4 proyectos, incluido Horario Escolar.
 - El botón **Ver mi horario** del hero apunta a `horario.html`, está centrado y se adapta a los temas claro y oscuro.
 - El botón **Entrar a las clases** abre el enlace de Google Meet en una pestaña nueva.
@@ -235,7 +231,7 @@ Página añadida el **26 de octubre de 2026**.
 - [ ] Cargar el horario escolar real de Emmanuel (materias y horas definitivas).
 - [ ] Añadir un enlace directo al horario en la navegación principal.
 - [ ] Valorar sincronización del horario entre dispositivos (requiere backend o almacenamiento externo).
-- [ ] Revisar accesibilidad de las celdas editables (roles y etiquetas ARIA).
+- [ ] Revisar accesibilidad de la tabla del horario (encabezados y contraste).
 - [ ] Unificar estilos repetidos de las páginas de proyectos.
 
 ---
