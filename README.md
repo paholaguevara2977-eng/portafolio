@@ -178,13 +178,13 @@ Página añadida el **26 de octubre de 2026**.
 
 | Fecha | Commit | Cambio |
 |---|---|---|
-| 2026-10-26 | `—` | Se quitó la edición: el horario ahora es de **solo lectura** y se eliminaron el guardado automático y los botones **Borrar materias** y **Restablecer**. |
-| 2026-10-26 | `—` | Horario reducido a un solo bloque de **3:00 a 4:00 PM**: lunes Computación y viernes Matemática. Se quitaron los días y períodos vacíos. |
-| 2026-10-26 | `—` | Ajuste: **lunes Computación** y **viernes Matemática**, una hora a las 3:00 PM. |
-| 2026-10-26 | `—` | Se añadió el botón **Entrar a las clases** con el enlace de Google Meet en `horario.html`. |
-| 2026-10-26 | `—` | Corrección: Matemática y Computación van los **lunes y viernes**, no los miércoles. |
-| 2026-10-26 | `—` | Se añadieron **Matemática** y **Computación** a las 3:00 PM de los lunes y miércoles, con el bloque de tarde y el objeto `DEFAULTS`. |
-| 2026-10-26 | `—` | Se añadió el botón **Ver mi horario** en el hero de la portada, con estilos para tema claro y oscuro. |
+| 2026-10-26 | `d3a6698` | Se quitó la edición: el horario ahora es de **solo lectura** y se eliminaron el guardado automático y los botones **Borrar materias** y **Restablecer**. Verificado en local y en el sitio publicado (sin `contenteditable` ni `localStorage`). |
+| 2026-10-26 | `fe4b4c6` | Horario reducido a un solo bloque de **3:00 a 4:00 PM**: lunes Computación y viernes Matemática. Se quitaron los días y períodos vacíos. |
+| 2026-10-26 | `eff04f0` | Ajuste: **lunes Computación** y **viernes Matemática**, una hora a las 3:00 PM. |
+| 2026-10-26 | `b524da1` | Se añadió el botón **Entrar a las clases** con el enlace de Google Meet en `horario.html`. |
+| 2026-10-26 | `8306881` | Corrección: Matemática y Computación van los **lunes y viernes**, no los miércoles. |
+| 2026-10-26 | `ac1c870` | Se añadieron **Matemática** y **Computación** a las 3:00 PM de los lunes y miércoles, con el bloque de tarde y el objeto `DEFAULTS`. |
+| 2026-10-26 | `c9a41db` | Se añadió el botón **Ver mi horario** en el hero de la portada, con estilos para tema claro y oscuro. |
 | 2026-10-26 | `76cc8e4` | Se agregó `horario.html` (horario escolar editable), su tarjeta en Proyectos y su categoría `educacion`. Verificado en local y en el sitio publicado. |
 | 2026-10-26 | `75184be` | Se agregó `favicon.ico` a todas las páginas. |
 | — | `f1b9c8b` | Primer commit del portafolio web. |
@@ -197,6 +197,7 @@ Página añadida el **26 de octubre de 2026**.
 - Solo se muestran las columnas **Lunes** y **Viernes**; no quedan cuadros vacíos.
 - Computación aparece el lunes y Matemática el viernes, de 3:00 a 4:00 PM.
 - El horario es de **solo lectura**: no hay celdas editables, guardado automático ni botones de borrar/restablecer.
+- Verificado en el sitio publicado (commit `d3a6698`): la página responde 200 y su HTML ya no contiene `contenteditable`, `localStorage` ni los botones de edición.
 - El día actual se resalta correctamente (probado en lunes).
 - El filtro **Educación** muestra 4 proyectos, incluido Horario Escolar.
 - El botón **Ver mi horario** del hero apunta a `horario.html`, está centrado y se adapta a los temas claro y oscuro.
