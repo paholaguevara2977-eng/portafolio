@@ -139,6 +139,7 @@ Página añadida el **26 de octubre de 2026**.
 - Tabla semanal de **lunes a viernes** con 8 períodos, recreo y almuerzo.
 - Materias precargadas: **Matemática** y **Computación** los **lunes y viernes** desde las **3:00 PM** (3:00–3:45 Matemática y 3:45–4:30 Computación).
 - Materias y horas **editables**: se hace clic en una celda y se escribe.
+- Botón **Entrar a las clases** con el enlace de Google Meet: https://meet.google.com/kab-jgny-ewu (abre en una pestaña nueva).
 - **Guardado automático** en `localStorage` con la clave:
   ```text
   emmanuel-horario-v1
@@ -173,6 +174,11 @@ Página añadida el **26 de octubre de 2026**.
    Las columnas son: 0 = lunes, 1 = martes, 2 = miércoles, 3 = jueves, 4 = viernes.
 3. Los cambios guardados por el usuario en `localStorage` tienen prioridad sobre `DEFAULTS`.
 
+### Enlace de clases
+
+- **Google Meet:** https://meet.google.com/kab-jgny-ewu
+- Se muestra como botón **Entrar a las clases** en `horario.html`.
+
 ### Limitaciones conocidas
 
 - El horario se guarda **solo en el navegador y dispositivo** donde se edita; no se sincroniza entre equipos.
@@ -185,6 +191,7 @@ Página añadida el **26 de octubre de 2026**.
 
 | Fecha | Commit | Cambio |
 |---|---|---|
+| 2026-10-26 | `—` | Se añadió el botón **Entrar a las clases** con el enlace de Google Meet en `horario.html`. |
 | 2026-10-26 | `—` | Corrección: Matemática y Computación van los **lunes y viernes**, no los miércoles. |
 | 2026-10-26 | `—` | Se añadieron **Matemática** y **Computación** a las 3:00 PM de los lunes y miércoles, con el bloque de tarde y el objeto `DEFAULTS`. |
 | 2026-10-26 | `—` | Se añadió el botón **Ver mi horario** en el hero de la portada, con estilos para tema claro y oscuro. |
@@ -202,6 +209,7 @@ Página añadida el **26 de octubre de 2026**.
 - Los datos persisten después de recargar y tienen prioridad sobre los valores por defecto (probado con “Física”).
 - El filtro **Educación** muestra 4 proyectos, incluido Horario Escolar.
 - El botón **Ver mi horario** del hero apunta a `horario.html`, está centrado y se adapta a los temas claro y oscuro.
+- El botón **Entrar a las clases** abre el enlace de Google Meet en una pestaña nueva.
 - Sin errores en la consola del navegador.
 
 ---
