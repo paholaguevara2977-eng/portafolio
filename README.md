@@ -136,8 +136,8 @@ Página añadida el **26 de octubre de 2026**.
 
 ### Funciones
 
-- Tabla semanal de **lunes a viernes** con 8 períodos, recreo y almuerzo.
-- Materias precargadas: **Matemática** y **Computación** los **lunes y viernes** desde las **3:00 PM** (3:00–3:45 Matemática y 3:45–4:30 Computación).
+- Tabla semanal de **lunes a viernes** con 7 períodos, recreo y almuerzo.
+- Materias precargadas a las **3:00 PM**: **Computación** los lunes y **Matemática** los viernes (3:00–3:45).
 - Materias y horas **editables**: se hace clic en una celda y se escribe.
 - Botón **Entrar a las clases** con el enlace de Google Meet: https://meet.google.com/kab-jgny-ewu (abre en una pestaña nueva).
 - **Guardado automático** en `localStorage` con la clave:
@@ -161,15 +161,14 @@ Página añadida el **26 de octubre de 2026**.
 | 5 | 11:30 – 12:15 | — |
 | 6 | 12:15 – 13:00 | — |
 | Almuerzo | 13:00 – 15:00 | — |
-| 7 | 15:00 – 15:45 | Matemática (lunes y viernes) |
-| 8 | 15:45 – 16:30 | Computación (lunes y viernes) |
+| 7 | 15:00 – 15:45 | Computación (lunes) / Matemática (viernes) |
 
 ### Cómo dejar materias fijas por defecto
 
 1. Editar el arreglo `ROWS` en `horario.html` si cambian los períodos u horas.
 2. Editar el objeto `DEFAULTS` para asignar materias iniciales. Las claves siguen el formato `cell-fila-columna`, por ejemplo:
    ```js
-   'cell-8-0': 'Matemática'  // fila 8, lunes
+   'cell-8-0': 'Computación'  // fila 8, lunes
    ```
    Las columnas son: 0 = lunes, 1 = martes, 2 = miércoles, 3 = jueves, 4 = viernes.
 3. Los cambios guardados por el usuario en `localStorage` tienen prioridad sobre `DEFAULTS`.
@@ -191,6 +190,7 @@ Página añadida el **26 de octubre de 2026**.
 
 | Fecha | Commit | Cambio |
 |---|---|---|
+| 2026-10-26 | `—` | Ajuste: **lunes Computación** y **viernes Matemática**, una hora a las 3:00 PM. |
 | 2026-10-26 | `—` | Se añadió el botón **Entrar a las clases** con el enlace de Google Meet en `horario.html`. |
 | 2026-10-26 | `—` | Corrección: Matemática y Computación van los **lunes y viernes**, no los miércoles. |
 | 2026-10-26 | `—` | Se añadieron **Matemática** y **Computación** a las 3:00 PM de los lunes y miércoles, con el bloque de tarde y el objeto `DEFAULTS`. |
@@ -203,8 +203,8 @@ Página añadida el **26 de octubre de 2026**.
 
 - Página publicada responde **HTTP 200**: `/portafolio/horario.html`.
 - La portada publicada incluye la tarjeta **Horario Escolar**.
-- La tabla genera 10 filas y 40 celdas editables.
-- Matemática aparece los lunes y viernes a las 3:00 PM; Computación, los mismos días a las 3:45 PM. El miércoles queda libre en ese horario.
+- La tabla genera 9 filas y 35 celdas editables.
+- Computación aparece el lunes y Matemática el viernes, ambos a las 3:00 PM; el resto de los días queda libre en ese horario.
 - El día actual se resalta correctamente (probado en lunes).
 - Los datos persisten después de recargar y tienen prioridad sobre los valores por defecto (probado con “Física”).
 - El filtro **Educación** muestra 4 proyectos, incluido Horario Escolar.
